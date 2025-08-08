@@ -1,0 +1,13 @@
+{
+  "name": "forhad-final-notification-sender",
+  "version": "1.0.0",
+  "description": "Script to send FCM notifications",
+  "main": "send-notifications.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node send-notifications.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}
