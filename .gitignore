@@ -1,0 +1,27 @@
+# Firebase service account key (Extremely sensitive - DO NOT COMMIT)
+# এই ফাইলটি আপনার প্রজেক্টের মাস্টার চাবির মতো কাজ করে।
+service-account-key.json
+
+# Node.js dependencies
+# npm install চালানোর পর এই ফোল্ডারে সকল প্যাকেজ ডাউনলোড হয়।
+# এটি অনেক বড় এবং এটি আপলোড করার কোনো প্রয়োজন নেই।
+node_modules/
+
+# Operating System generated files
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Log files
+# বিভিন্ন সময়ে তৈরি হওয়া লগ ফাইল।
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables file (যদি ব্যবহার করেন)
+# .env ফাইলে সাধারণত API key বা গোপন তথ্য রাখা হয়।
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
