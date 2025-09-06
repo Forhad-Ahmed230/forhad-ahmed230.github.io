@@ -1,11 +1,22 @@
 importScripts("https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js");
+
 const firebaseConfig = { apiKey: "AIzaSyAasfaqKX6_YerMvNNqMEkLhyHQKCkUCYY", authDomain: "notification-6e1fe.firebaseapp.com", projectId: "notification-6e1fe", storageBucket: "notification-6e1fe.appspot.com", messagingSenderId: "466180249875", appId: "1:466180249875:web:a8cdea1129ecb9d20b62e6", measurementId: "G-LYGLEQDE0M" };
 
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(async (payload) => {
+    console.log('[firebase-messaging-sw.js] Received background message ', payload);
+
+    try {
+        const audio = new Audio('notification.mp3');
+        await audio.play();
+        console.log('Notification sound played successfully.');
+    } catch (error) {
+        console.error('Error playing notification sound:', error);
+    }
+
     const notificationTitle = payload.data.title;
     const notificationOptions = {
         body: payload.data.body,
@@ -14,6 +25,7 @@ messaging.onBackgroundMessage(async (payload) => {
         badge: payload.data.badge,
         data: { url: payload.data.url }
     };
+    
     return self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
