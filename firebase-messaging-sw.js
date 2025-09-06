@@ -9,22 +9,21 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage(async (payload) => {
     console.log('[firebase-messaging-sw.js] Received background message ', payload);
 
-    try {
-        const audio = new Audio('notification.mp3');
-        await audio.play();
-        console.log('Notification sound played successfully.');
-    } catch (error) {
-        console.error('Error playing notification sound:', error);
-    }
-
     const notificationTitle = payload.data.title;
     const notificationOptions = {
         body: payload.data.body,
         icon: payload.data.icon,
         image: payload.data.image,
         badge: payload.data.badge,
-        data: { url: payload.data.url }
+        data: { url: payload.data.url },
+
+        // --- নতুন এবং নির্ভরযোগ্য সাউন্ড ফিচার ---
+        silent: false, // নিশ্চিত করে যে নোটিফিকেশন সাইলেন্ট নয়
+        requireInteraction: true // ব্যবহারকারী interact না করা পর্যন্ত নোটিফিকেশন থাকবে
+        // ------------------------------------
     };
+    
+    // আমাদের আগের কাস্টম সাউন্ড প্লে করার কোডটি এখন আর প্রয়োজন নেই, কারণ silent: false বেশি নির্ভরযোগ্য।
     
     return self.registration.showNotification(notificationTitle, notificationOptions);
 });
