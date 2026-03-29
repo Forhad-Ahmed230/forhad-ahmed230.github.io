@@ -185,37 +185,9 @@ body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--tex
     background: #7c3aed !important; /* হোভার করলে একটু গাঢ় হবে */
 }
 
-
-/* ২. এই CSS টুকু স্টাইল ট্যাগের নিচে দিন */
-.sync-dot.offline {
-    background: #dc2626 !important;
-    box-shadow: 0 0 12px #dc2626;
-    animation: blinker 1.5s linear infinite;
-}
-
-@keyframes blinker {
-    50% { opacity: 0.2; }
-}
-
-#offline-status-bar {
-    animation: slideDown 0.5s ease-out;
-}
-
-@keyframes slideDown {
-    from { transform: translateY(-100%); }
-    to { transform: translateY(0); }
-}
 </style>
 </head>
 <body>
-
-<body onload="checkInitialOnlineStatus()"> <!-- body ট্যাগে এই onload টি যোগ করুন -->
-
-<!-- ১. এই বারটি এখানে বসান -->
-<div id="offline-status-bar" style="display:none; background:#dc2626; color:#fff; text-align:center; padding:8px; font-size:14px; position:fixed; top:0; width:100%; z-index:10001; font-weight:bold; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
-    <i class="fa-solid fa-plane-slash"></i> আপনি এখন অফলাইনে আছেন। ইন্টারনেট আসলে সব ডেটা অটো সেভ হবে।
-</div>
-
 
 <div id="fb-loading">
   <div class="spinner"></div>
@@ -870,39 +842,16 @@ function updateSyncDot(){
 }
 
 // অনলাইন হলে অটো sync
-// ৩. এই লজিকটি স্ক্রিপ্ট ট্যাগের ভেতর দিন
-function checkInitialOnlineStatus() {
-    if (!navigator.onLine) {
-        setOfflineUI(true);
-    }
-}
-
-function setOfflineUI(isOffline) {
-    var bar = document.getElementById('offline-status-bar');
-    var dot = document.getElementById('sync-dot');
-    
-    if (isOffline) {
-        bar.style.display = 'block';
-        if(dot) dot.classList.add('offline');
-        showToast("⚠️ ইন্টারনেট সংযোগ বিচ্ছিন্ন! অফলাইন মোড চালু।");
-    } else {
-        bar.style.display = 'none';
-        if(dot) dot.classList.remove('offline');
-        showToast("✅ ইন্টারনেট ফিরে এসেছে! ডেটা সিঙ্ক হচ্ছে...");
-    }
-}
-
-window.addEventListener('online', function() {
-    _isOnline = true;
-    setOfflineUI(false);
-    updateSyncDot();
-    flushQueue(); // অনলাইনে আসার সাথে সাথে সিঙ্ক শুরু হবে
+window.addEventListener('online',function(){
+  _isOnline=true;
+  updateSyncDot();
+  showToast('✅ নেট ফিরে এসেছে — sync হচ্ছে...');
+  setTimeout(flushQueue,1500);
 });
-
-window.addEventListener('offline', function() {
-    _isOnline = false;
-    setOfflineUI(true);
-    updateSyncDot();
+window.addEventListener('offline',function(){
+  _isOnline=false;
+  updateSyncDot();
+  showToast('⚠️ নেট নেই — অফলাইন মোডে চলছে');
 });
 
 // Queue execute করা
@@ -1266,58 +1215,49 @@ async function saveIncome(){
 
 function filterIncome(f,btn){currentFilter=f;document.querySelectorAll('#page-income .filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderIncome();}
 
-function renderIncome() {
-  var q = (document.getElementById('income-search').value || '').toLowerCase();
-  var nowYM = new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0');
-  var thisMonth = income.filter(function(x) { return getMK(x.date) === nowYM; });
-  
-  var total = thisMonth.reduce(function(s, x) { return s + (x.total || 0); }, 0);
-  var adv = thisMonth.reduce(function(s, x) { return s + (x.advance || 0); }, 0);
-  var due = thisMonth.reduce(function(s, x) { return s + (x.due || 0); }, 0);
-  var pc = thisMonth.filter(function(x) { return x.status === 'Paid'; }).length;
-  var allDue = income.reduce(function(s, x) { return s + (x.due || 0); }, 0);
-
-  document.getElementById('income-summary').innerHTML =
-    '<div class="sum-card"><div class="lbl">এই মাসের বিল</div><div class="val" style="color:var(--g1)">৳' + fmt(total) + '</div></div>' +
-    '<div class="sum-card"><div class="lbl">এই মাসে আদায়</div><div class="val" style="color:var(--green)">৳' + fmt(adv) + '</div></div>' +
-    '<div class="sum-card"><div class="lbl">এই মাসের বকেয়া</div><div class="val" style="color:var(--red)">৳' + fmt(due) + '</div></div>' +
-    '<div class="sum-card"><div class="lbl">মোট বকেয়া (সব)</div><div class="val" style="color:var(--amber)">৳' + fmt(allDue) + '</div></div>' +
-    '<div class="sum-card"><div class="lbl">এই মাসে Paid</div><div class="val" style="color:var(--green)">' + pc + 'টি</div></div>';
-
-  var list = [...income].reverse().filter(function(r) {
-    if (currentFilter !== 'all' && r.status !== currentFilter) return false;
-    if (q && !(r.customer.toLowerCase().includes(q) || r.work.toLowerCase().includes(q))) return false;
+function renderIncome(){
+  var q=(document.getElementById('income-search').value||'').toLowerCase();
+  // বাগ ৯ ঠিক: এই মাসের ডেটা আলাদা করা
+  var nowYM=new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0');
+  var thisMonth=income.filter(function(x){return getMK(x.date)===nowYM;});
+  var total=thisMonth.reduce(function(s,x){return s+(x.total||0);},0);
+  var adv=thisMonth.reduce(function(s,x){return s+(x.advance||0);},0);
+  var due=thisMonth.reduce(function(s,x){return s+(x.due||0);},0);
+  var pc=thisMonth.filter(function(x){return x.status==='Paid';}).length;
+  var allDue=income.reduce(function(s,x){return s+(x.due||0);},0); // সব সময়ের বকেয়া
+  document.getElementById('income-summary').innerHTML=
+    '<div class="sum-card"><div class="lbl">এই মাসের বিল</div><div class="val" style="color:var(--g1)">৳'+fmt(total)+'</div></div>'+
+    '<div class="sum-card"><div class="lbl">এই মাসে আদায়</div><div class="val" style="color:var(--green)">৳'+fmt(adv)+'</div></div>'+
+    '<div class="sum-card"><div class="lbl">এই মাসের বকেয়া</div><div class="val" style="color:var(--red)">৳'+fmt(due)+'</div></div>'+
+    '<div class="sum-card"><div class="lbl">মোট বকেয়া (সব)</div><div class="val" style="color:var(--amber)">৳'+fmt(allDue)+'</div></div>'+
+    '<div class="sum-card"><div class="lbl">এই মাসে Paid</div><div class="val" style="color:var(--green)">'+pc+'টি</div></div>';
+  var list=[...income].reverse().filter(function(r){
+    if(currentFilter!=='all'&&r.status!==currentFilter)return false;
+    if(q&&!(r.customer.toLowerCase().includes(q)||r.work.toLowerCase().includes(q)))return false;
     return true;
   });
-
-  document.getElementById('income-list').innerHTML = list.length ? list.map(function(r) {
-    var pct = r.total > 0 ? Math.min(100, (r.advance / r.total) * 100) : 100;
-    var bc = r.status === 'Paid' ? 'paid' : r.status === 'Partial' ? 'partial' : 'due';
-    var badgeCls = r.status === 'Paid' ? 'bg-g' : r.status === 'Partial' ? 'bg-a' : 'bg-r';
-    
-    // ✅ এখানে সিঙ্ক আইকনটি তৈরি করা হচ্ছে (অফলাইন/অনলাইন চেক)
-    var syncIcon = r._pending ? 
-        '<i class="fa-solid fa-clock-rotate-left" style="color:#d97706; font-size:12px; margin-left:5px;" title="অফলাইনে আছে"></i>' : 
-        '<i class="fa-solid fa-cloud-check" style="color:#059669; font-size:12px; margin-left:5px;" title="অনলাইনে সেভ"></i>';
-
-    var dueCol = r.due > 0 ? '#dc2626' : '#059669';
-    var collectBtn = r.due > 0 ? '<button class="btn btn-pay btn-sm" title="বকেয়া জমা নিন" onclick="openCollectDue(\'' + r.id + '\')"><i class="fa-solid fa-hand-holding-dollar"></i></button>' : '';
-
-    return '<div class="ec">' +
-      '<div class="ec-main"><strong>' + r.customer + '</strong> ' + syncIcon + ' <span class="badge ' + badgeCls + '" style="margin-left:7px">' + r.status + '</span><br>' +
-      '<small style="color:#aaa">' + r.work + ' · ' + r.date + '</small>' +
-      '<div class="pay-bar-wrap"><div class="pay-bar ' + bc + '" style="width:' + pct + '%"></div></div></div>' +
-      '<div style="text-align:right;min-width:80px"><div style="font-weight:800;font-size:14px">৳' + fmt(r.total) + '</div>' +
-      '<small style="color:#059669">জমা: ৳' + fmt(r.advance) + '</small><br>' +
-      '<small style="color:' + dueCol + ';font-weight:700">বাকি: ৳' + fmt(r.due) + '</small></div>' +
-      '<div style="display:flex;flex-direction:column;gap:5px">' +
-      collectBtn +
-      '<button class="btn btn-edit btn-sm" onclick="requirePin(\'আয় এডিট\',\'এডিট করতে পিন দিন\',function(){_doEditIncome(\'' + r.id + '\');})"><i class="fa-solid fa-pen-to-square"></i></button>' +
-      '<button class="btn btn-wa btn-sm" onclick="previewWhatsApp(\'' + r.id + '\')"><i class="fa-brands fa-whatsapp"></i></button>' +
-      '<button class="btn btn-memo btn-sm" onclick="showInvoice(\'' + r.id + '\')"><i class="fa-solid fa-receipt"></i></button>' +
-      '<button class="btn btn-red btn-sm" onclick="requirePin(\'আয় মুছুন\',\'মুছতে পিন দিন\',function(){_doDelete(\'inc\', \'' + r.id + '\');})"><i class="fa-solid fa-trash"></i></button>' +
-      '</div></div>';
-  }).join('') : '<div style="text-align:center;padding:40px;color:#ccc"><i class="fa-solid fa-inbox" style="font-size:40px"></i><p style="margin-top:10px">কোনো এন্ট্রি নেই</p></div>';
+  document.getElementById('income-list').innerHTML=list.length?list.map(function(r){
+    var pct=r.total>0?Math.min(100,(r.advance/r.total)*100):100;
+    var bc=r.status==='Paid'?'paid':r.status==='Partial'?'partial':'due';
+    var badgeCls=r.status==='Paid'?'bg-g':r.status==='Partial'?'bg-a':'bg-r';
+    var pendingBadge=r._pending?'<span style="background:#fef3c7;color:#d97706;font-size:9px;font-weight:800;padding:2px 6px;border-radius:10px;margin-left:4px">⏳ sync বাকি</span>':'';
+    var dueCol=r.due>0?'#dc2626':'#059669';
+    var collectBtn=r.due>0?'<button class="btn btn-pay btn-sm" title="বকেয়া জমা নিন" onclick="openCollectDue(\''+r.id+'\')"><i class="fa-solid fa-hand-holding-dollar"></i></button>':'';
+    return '<div class="ec">'
+      +'<div class="ec-main"><strong>'+r.customer+'</strong><span class="badge '+badgeCls+'" style="margin-left:7px">'+r.status+'</span>'+pendingBadge+'<br>'
+      +'<small style="color:#aaa">'+r.work+' · '+r.date+'</small>'
+      +'<div class="pay-bar-wrap"><div class="pay-bar '+bc+'" style="width:'+pct+'%"></div></div></div>'
+      +'<div style="text-align:right;min-width:80px"><div style="font-weight:800;font-size:14px">৳'+fmt(r.total)+'</div>'
+      +'<small style="color:#059669">জমা: ৳'+fmt(r.advance)+'</small><br>'
+      +'<small style="color:'+dueCol+';font-weight:700">বাকি: ৳'+fmt(r.due)+'</small></div>'
+      +'<div style="display:flex;flex-direction:column;gap:5px">'
+      +collectBtn
+      +'<button class="btn btn-edit btn-sm" onclick="requirePin(\'আয় এডিট\',\'এডিট করতে পিন দিন\',function(){_doEditIncome(\''+r.id+'\');})"><i class="fa-solid fa-pen-to-square"></i></button>'
+      +'<button class="btn btn-wa btn-sm" onclick="previewWhatsApp(\''+r.id+'\')"><i class="fa-brands fa-whatsapp"></i></button>'
+      +'<button class="btn btn-memo btn-sm" onclick="showInvoice(\''+r.id+'\')"><i class="fa-solid fa-receipt"></i></button>'
+      +'<button class="btn btn-red btn-sm" onclick="requirePin(\'আয় মুছুন\',\'মুছতে পিন দিন\',function(){_doDelete(\'inc\',\''+r.id+'\');})"><i class="fa-solid fa-trash"></i></button>'
+      +'</div></div>';
+  }).join(''):'<div style="text-align:center;padding:40px;color:#ccc"><i class="fa-solid fa-inbox" style="font-size:40px"></i><p style="margin-top:10px">কোনো এন্ট্রি নেই</p></div>';
 }
 
 function _doEditIncome(id){
