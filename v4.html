@@ -3099,13 +3099,16 @@ if('serviceWorker' in navigator){
 <!-- FLOATING BANGLA TYPING TOOL MODULE             -->
 <!-- ══════════════════════════════════════════════ -->
 
-<!-- External Bijoy converter scripts -->
+<!-- External Bijoy converter scripts (same folder as HTML) -->
 <script src="b2u.js"></script>
 <script src="common.js"></script>
 <script src="count.js"></script>
 <script src="layout.js"></script>
 <script src="main.js"></script>
 <script src="u2b.js"></script>
+<!-- Hidden bridge elements for Bijoy library (uses these IDs internally) -->
+<textarea id="EDT" style="display:none"></textarea>
+<textarea id="CONVERTEDT" style="display:none"></textarea>
 
 <style>
 /* ── Typing Tool FAB ── */
@@ -3346,22 +3349,15 @@ if('serviceWorker' in navigator){
     if(!edt.value.trim()){ showToast('আগে Unicode টেক্সট লিখুন'); return; }
     // global ConvertToTextArea এর বদলে সরাসরি — যদি u2b ফাংশন থাকে
     try{
-      // u2b.js এর UnicodeToAnsi বা ConvertToTextArea ফাংশন
       var src = edt.value;
-      if(typeof unicodeToAnsi === 'function') conv.value = unicodeToAnsi(src);
-      else if(typeof ConvertToTextArea === 'function'){
-        // original lib: EDT → CONVERTEDT ID ধরে কাজ করে
-        // তাই temp mirror করি
-        var origEdt = document.getElementById('EDT');
-        var origConv = document.getElementById('CONVERTEDT');
-        if(origEdt && origConv){
-          origEdt.value = src;
-          ConvertToTextArea('CONVERTEDT');
-          conv.value = origConv.value;
-        } else {
-          showToast('Converter স্ক্রিপ্ট লোড হয়নি');
-          return;
-        }
+      var bridgeEdt  = document.getElementById('EDT');
+      var bridgeConv = document.getElementById('CONVERTEDT');
+      if(typeof ConvertToTextArea === 'function' && bridgeEdt && bridgeConv){
+        bridgeEdt.value = src;
+        ConvertToTextArea('CONVERTEDT');
+        conv.value = bridgeConv.value;
+      } else if(typeof unicodeToAnsi === 'function'){
+        conv.value = unicodeToAnsi(src);
       } else { showToast('Converter স্ক্রিপ্ট লোড হয়নি'); return; }
       typUpdateStats('typ-CONVERTEDT','typ-stat2');
       showToast('বিজয়-এ কনভার্ট হয়েছে ✓');
@@ -3375,15 +3371,14 @@ if('serviceWorker' in navigator){
     if(!conv.value.trim()){ showToast('আগে Bijoy টেক্সট লিখুন'); return; }
     try{
       var src = conv.value;
-      if(typeof ansiToUnicode === 'function') edt.value = ansiToUnicode(src);
-      else if(typeof ConvertFromTextArea === 'function'){
-        var origEdt = document.getElementById('EDT');
-        var origConv = document.getElementById('CONVERTEDT');
-        if(origEdt && origConv){
-          origConv.value = src;
-          ConvertFromTextArea('CONVERTEDT');
-          edt.value = origEdt.value;
-        } else { showToast('Converter স্ক্রিপ্ট লোড হয়নি'); return; }
+      var bridgeEdt  = document.getElementById('EDT');
+      var bridgeConv = document.getElementById('CONVERTEDT');
+      if(typeof ConvertFromTextArea === 'function' && bridgeEdt && bridgeConv){
+        bridgeConv.value = src;
+        ConvertFromTextArea('CONVERTEDT');
+        edt.value = bridgeEdt.value;
+      } else if(typeof ansiToUnicode === 'function'){
+        edt.value = ansiToUnicode(src);
       } else { showToast('Converter স্ক্রিপ্ট লোড হয়নি'); return; }
       typHandleInput();
       showToast('ইউনিকোড-এ কনভার্ট হয়েছে ✓');
