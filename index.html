@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>শাপলা আর্ট - প্রিমিয়াম পোর্টফোলিও</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+<style>
+:root {
+  --primary: #4f46e5;
+  --secondary: #db2777;
+  --dark: #0f172a;
+  --glass: rgba(255,255,255,0.8);
+  --text: #334155;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+body {
+  font-family: 'Hind Siliguri', sans-serif;
+  background: #f1f5f9;
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── Background ── */
+.bg-mesh {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+  background-color: #f1f5f9;
+  background-image:
+    radial-gradient(at 0% 0%,   rgba(79,70,229,0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(219,39,119,0.15) 0px, transparent 50%);
+}
+
+/* ── Header ── */
+header {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(12px);
+  padding: 15px 25px;
+  position: sticky; top: 0; z-index: 1000;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+}
+.logo {
+  font-size: 22px; font-weight: 800; color: var(--primary);
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ── Hero ── */
+.hero { padding: 80px 20px; text-align: center; }
+.hero-biz-name {
+  font-size: clamp(45px,10vw,75px); font-weight: 900; color: var(--primary);
+  margin-bottom: 5px; text-shadow: 2px 2px 10px rgba(79,70,229,0.2);
+}
+.hero h1 { font-size: clamp(22px,5vw,28px); font-weight: 700; color: var(--dark); margin-bottom: 15px; }
+.hero p  { font-size: 18px; color: #64748b; max-width: 600px; margin: 0 auto 30px; }
+
+/* ── Button ── */
+.btn-main {
+  background: linear-gradient(135deg, var(--primary), #6366f1);
+  color: #fff; padding: 16px 35px; border-radius: 50px; font-weight: 700;
+  text-decoration: none; display: inline-block;
+  box-shadow: 0 10px 20px rgba(79,70,229,0.3);
+  transition: 0.3s; cursor: pointer; border: none; font-size: 18px;
+}
+.btn-main:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(79,70,229,0.4); }
+
+/* ── Section ── */
+.section {
+  padding: 60px 20px; max-width: 1200px; margin: 0 auto;
+  text-align: center; opacity: 0;
+}
+.section-title {
+  display: inline-block; margin-bottom: 40px;
+  font-size: 30px; font-weight: 800; color: var(--dark);
+  position: relative; padding-bottom: 12px;
+}
+.section-title::after {
+  content: ''; width: 100%; height: 4px; background: var(--primary);
+  position: absolute; bottom: 0; left: 0; border-radius: 2px;
+}
+
+/* ── Price Table ── */
+.price-table-container {
+  overflow-x: auto; background: var(--glass); border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+}
+.price-table { width: 100%; border-collapse: collapse; text-align: left; }
+.price-table th { background: var(--primary); color: #fff; padding: 18px 20px; }
+.price-table td { padding: 15px 20px; border-bottom: 1px solid rgba(0,0,0,0.05); color: var(--dark); }
+.price-table tbody tr:nth-child(odd)  { background-color: #ffffff; }
+.price-table tbody tr:nth-child(even) { background-color: #f8fafc; }
+.price-table tr:hover { background-color: #eff6ff !important; }
+.p-val { font-weight: 800; color: var(--primary); font-size: 18px; }
+
+/* ── Calculator ── */
+.calc-input {
+  width: 100%; padding: 12px 15px; border-radius: 12px;
+  border: 1px solid #e2e8f0; font-family: 'Hind Siliguri', sans-serif;
+  font-size: 15px; background: #fff; color: var(--dark); transition: border-color 0.2s;
+}
+.calc-input:focus { outline: none; border-color: var(--primary); }
+.calc-label { font-weight: 600; display: block; margin-bottom: 8px; color: var(--dark); font-size: 15px; }
+
+/* ── FAB ── */
+.fab-container {
+  position: fixed; bottom: 25px; right: 25px;
+  display: flex; flex-direction: column; gap: 12px; z-index: 2000;
+}
+.fab {
+  width: 55px; height: 55px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; color: #fff;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.15); transition: 0.3s; text-decoration: none;
+}
+.fb  { background: #1877F2; }
+.em  { background: #ea4335; }
+.wa  { background: #25D366; }
+.ph  { background: #4f46e5; }
+.fab:hover { transform: scale(1.1) translateY(-5px); }
+
+/* ── Footer ── */
+footer { text-align: center; padding: 50px 20px; color: #94a3b8; font-size: 14px; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 22px; }
+  .section-title { font-size: 24px; }
+  .calc-grid { grid-template-columns: 1fr !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+
+<!-- Header -->
+<header>
+  <div class="logo">
+    <i class="fa-solid fa-wand-magic-sparkles"></i>
+    <span>শাপলা আর্ট</span>
+  </div>
+  <div class="header-right">
+    <a href="#prices" class="btn-main" style="padding:8px 18px;font-size:12px;box-shadow:none;">রেট চার্ট</a>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero animate__animated animate__fadeIn">
+  <h2 class="hero-biz-name animate__animated animate__zoomIn">শাপলা আর্ট</h2>
+  <h1 class="animate__animated animate__fadeInUp">প্রিন্টিং জগতে আধুনিকতার ছোঁয়া</h1>
+  <p class="animate__animated animate__fadeInUp animate__delay-1s">সাপাহার, নওগাঁ। নিখুঁত ডিজাইন ও দ্রুত ডেলিভারির নিশ্চয়তা।</p>
+  <a href="tel:01791835232" class="btn-main animate__animated animate__pulse animate__infinite">অর্ডার করতে কল করুন</a>
+</section>
+
+<!-- Proprietor -->
+<section class="section">
+  <h2 class="section-title">পরিচয়</h2>
+  <div style="background:var(--glass);border-radius:24px;padding:35px;border:1px solid rgba(255,255,255,0.5);box-shadow:0 10px 30px rgba(0,0,0,0.03);max-width:450px;margin:0 auto;text-align:center;">
+    <img src="https://via.placeholder.com/150" alt="Proprietor" style="width:110px;height:110px;border-radius:50%;object-fit:cover;border:3px solid #fff;margin-bottom:15px;">
+    <h3 style="font-size:24px;font-weight:700;color:var(--dark);margin-bottom:10px;">মোঃ রাসেল আহমেদ</h3>
+    <p style="font-size:16px;color:#475569;font-weight:500;font-style:italic;">"সেরা ডিজাইন আর নিখুঁত প্রিন্টিংয়ে আপনার আস্থার ঠিকানা।"</p>
+    <div style="display:flex;justify-content:center;gap:12px;margin-top:20px;">
+      <a href="https://facebook.com/yourprofile" target="_blank" style="width:40px;height:40px;border-radius:50%;background:#eef2ff;color:#1877F2;display:flex;align-items:center;justify-content:center;"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="https://wa.me/8801791835232" target="_blank" style="width:40px;height:40px;border-radius:50%;background:#eef2ff;color:#25D366;display:flex;align-items:center;justify-content:center;"><i class="fa-brands fa-whatsapp"></i></a>
+      <a href="mailto:your@email.com" style="width:40px;height:40px;border-radius:50%;background:#eef2ff;color:#ea4335;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-envelope"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="section">
+  <h2 class="section-title">আমাদের সেবাসমূহ</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+    <div style="background:var(--glass);padding:30px;border-radius:20px;border:1px solid rgba(255,255,255,0.5);">
+      <div style="font-size:26px;color:var(--primary);margin-bottom:15px;"><i class="fa-solid fa-flag"></i></div>
+      <h3>প্যানা / ব্যানার</h3>
+      <p style="font-size:14px;color:#64748b;">উন্নত ফ্লেক্স প্রিন্টে টেকসই ও উজ্জ্বল রঙের প্যানা ও ব্যানার।</p>
+    </div>
+    <div style="background:var(--glass);padding:30px;border-radius:20px;border:1px solid rgba(255,255,255,0.5);">
+      <div style="font-size:26px;color:var(--primary);margin-bottom:15px;"><i class="fa-solid fa-layer-group"></i></div>
+      <h3>পিভিসি</h3>
+      <p style="font-size:14px;color:#64748b;">উচ্চমানের পিভিসি শিটে দীর্ঘস্থায়ী প্রিন্ট ও সাইনেজ।</p>
+    </div>
+    <div style="background:var(--glass);padding:30px;border-radius:20px;border:1px solid rgba(255,255,255,0.5);">
+      <div style="font-size:26px;color:var(--primary);margin-bottom:15px;"><i class="fa-solid fa-stamp"></i></div>
+      <h3>ভিনাইল স্টিকার</h3>
+      <p style="font-size:14px;color:#64748b;">গাড়ি, শোকেস ও দেয়ালের জন্য কাস্টম ভিনাইল স্টিকার।</p>
+    </div>
+    <div style="background:var(--glass);padding:30px;border-radius:20px;border:1px solid rgba(255,255,255,0.5);">
+      <div style="font-size:26px;color:var(--primary);margin-bottom:15px;"><i class="fa-solid fa-address-card"></i></div>
+      <h3>ভিজিটিং কার্ড</h3>
+      <p style="font-size:14px;color:#64748b;">ম্যাট ও গ্লসি ল্যামিনেশনে প্রিমিয়াম কার্ড।</p>
+    </div>
+    <div style="background:var(--glass);padding:30px;border-radius:20px;border:1px solid rgba(255,255,255,0.5);">
+      <div style="font-size:26px;color:var(--primary);margin-bottom:15px;"><i class="fa-solid fa-images"></i></div>
+      <h3>ব্যানার ও সাইনবোর্ড</h3>
+      <p style="font-size:14px;color:#64748b;">উন্নত মানের ডিজিটাল কালার প্রিন্ট।</p>
+    </div>
+    <div style="background:var(--glass);padding:30px;border-radius:20px;border:1px solid rgba(255,255,255,0.5);">
+      <div style="font-size:26px;color:var(--primary);margin-bottom:15px;"><i class="fa-solid fa-file-invoice"></i></div>
+      <h3>ক্যাশ মেমো</h3>
+      <p style="font-size:14px;color:#64748b;">অফিস ও দোকানের জন্য কাস্টম মেমো বই।</p>
+    </div>
+  </div>
+</section>
+
+<!-- Price Table -->
+<section id="prices" class="section">
+  <h2 class="section-title">সার্ভিস ও মূল্য তালিকা</h2>
+  <div class="price-table-container">
+    <table class="price-table">
+      <thead>
+        <tr><th>সার্ভিসের নাম</th><th>মূল্য (আনুমানিক)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>প্যানা / ব্যানার (প্রতি স্কয়ার ফিট)</td><td><span class="p-val">৳১২</span></td></tr>
+        <tr><td>পিভিসি (প্রতি স্কয়ার ফিট)</td><td><span class="p-val">৳৫০</span></td></tr>
+        <tr><td>ভিনাইল স্টিকার (প্রতি স্কয়ার ফিট)</td><td><span class="p-val">৳৩৫</span></td></tr>
+        <tr><td>ভিজিটিং কার্ড (১০০০ পিস)</td><td><span class="p-val">৳৫৫০</span></td></tr>
+        <tr><td>ক্যাশ মেমো (১০০ পাতা)</td><td><span class="p-val">৳৮০</span></td></tr>
+        <tr><td>আইডি কার্ড (রিবনসহ)</td><td><span class="p-val">৳৫০</span></td></tr>
+        <tr><td>লোগো ডিজাইন (প্রফেশনাল)</td><td><span class="p-val">৳৫০০</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Price Calculator -->
+<section id="calculator" class="section">
+  <h2 class="section-title">প্রাইস ক্যালকুলেটর</h2>
+  <div style="max-width:600px;margin:0 auto;background:var(--glass);border-radius:24px;padding:35px;border:1px solid rgba(255,255,255,0.5);box-shadow:0 10px 25px rgba(0,0,0,0.04);">
+
+    <!-- Service + Qty row -->
+    <div class="calc-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;">
+      <div>
+        <label class="calc-label">সার্ভিস বেছে নিন</label>
+        <select id="service" onchange="calcPrice()" class="calc-input">
+          <option value="pana">প্যানা / ব্যানার (৳১২/বর্গফুট)</option>
+          <option value="pvc">পিভিসি (৳৫০/বর্গফুট)</option>
+          <option value="vinyl">ভিনাইল স্টিকার (৳৩৫/বর্গফুট)</option>
+          <option value="card">ভিজিটিং কার্ড (৳০.৫৫/পিস)</option>
+          <option value="memo">ক্যাশ মেমো (৳০.৮০/পাতা)</option>
+          <option value="id">আইডি কার্ড (৳৫০/পিস)</option>
+          <option value="logo">লোগো ডিজাইন (৳৫০০)</option>
+        </select>
+      </div>
+      <div id="qty-wrap">
+        <label id="qty-label" class="calc-label">পরিমাণ</label>
+        <input type="number" id="qty" value="100" min="1" oninput="calcPrice()" class="calc-input">
+      </div>
+    </div>
+
+    <!-- Size row (sqft items) -->
+    <div id="size-row" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;" class="calc-grid">
+      <div>
+        <label class="calc-label">প্রস্থ (ফুট)</label>
+        <input type="number" id="bw" value="3" min="1" oninput="calcPrice()" class="calc-input">
+      </div>
+      <div>
+        <label class="calc-label">উচ্চতা (ফুট)</label>
+        <input type="number" id="bh" value="2" min="1" oninput="calcPrice()" class="calc-input">
+      </div>
+    </div>
+
+    <!-- Result -->
+    <div style="background:linear-gradient(135deg,var(--primary),#6366f1);border-radius:16px;padding:25px;text-align:center;color:#fff;margin-top:10px;">
+      <p style="font-size:15px;opacity:0.85;margin-bottom:6px;">আনুমানিক মূল্য</p>
+      <p id="calc-result" style="font-size:42px;font-weight:900;margin:0 0 6px;">৳৩৬</p>
+      <p style="font-size:12px;opacity:0.7;">* ডিজাইন ও ডেলিভারি চার্জ আলাদা হতে পারে। নিশ্চিত মূল্যে কল করুন।</p>
+    </div>
+
+    <div style="text-align:center;margin-top:20px;">
+      <a href="tel:01791835232" class="btn-main" style="font-size:15px;padding:12px 28px;box-shadow:none;">
+        <i class="fa-solid fa-phone" style="margin-right:8px;"></i>অর্ডার করতে কল করুন
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <h2 class="section-title">সাধারণ কিছু প্রশ্ন</h2>
+  <div style="max-width:800px;margin:0 auto;display:grid;gap:15px;text-align:left;">
+    <div style="background:var(--glass);padding:18px 25px;border-radius:15px;border-left:5px solid var(--primary);">
+      <span style="font-weight:800;color:var(--dark);font-size:16px;margin-bottom:8px;display:block;">১. ডেলিভারি পেতে কতদিন লাগে?</span>
+      <p style="color:#64748b;font-size:15px;">ডিজাইন কনফার্ম হওয়ার ২৪-৪৮ ঘণ্টার মধ্যে ডেলিভারি দেওয়া হয়।</p>
+    </div>
+    <div style="background:var(--glass);padding:18px 25px;border-radius:15px;border-left:5px solid var(--primary);">
+      <span style="font-weight:800;color:var(--dark);font-size:16px;margin-bottom:8px;display:block;">২. আপনারা কি অনলাইনে অর্ডার নেন?</span>
+      <p style="color:#64748b;font-size:15px;">হ্যাঁ, হোয়াটসঅ্যাপ বা ফেসবুকের মাধ্যমে দেশের যেকোনো প্রান্ত থেকে অর্ডার নেওয়া হয়।</p>
+    </div>
+    <div style="background:var(--glass);padding:18px 25px;border-radius:15px;border-left:5px solid var(--primary);">
+      <span style="font-weight:800;color:var(--dark);font-size:16px;margin-bottom:8px;display:block;">৩. ডিজাইন চার্জ কি আলাদা দিতে হয়?</span>
+      <p style="color:#64748b;font-size:15px;">প্রিন্টিং অর্ডারের সাথে বেসিক ডিজাইন ফ্রি, তবে জটিল লোগোর জন্য সামান্য চার্জ প্রযোজ্য।</p>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery -->
+<section class="section">
+  <h2 class="section-title">গ্যালারি</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;">
+    <div style="height:250px;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 10px 20px rgba(0,0,0,0.05);">
+      <img src="https://via.placeholder.com/500x400?text=Pana" style="width:100%;height:100%;object-fit:cover;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);display:flex;align-items:flex-end;padding:20px;color:#fff;font-weight:700;">প্যানা / ব্যানার</div>
+    </div>
+    <div style="height:250px;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 10px 20px rgba(0,0,0,0.05);">
+      <img src="https://via.placeholder.com/500x400?text=PVC" style="width:100%;height:100%;object-fit:cover;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);display:flex;align-items:flex-end;padding:20px;color:#fff;font-weight:700;">পিভিসি</div>
+    </div>
+    <div style="height:250px;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 10px 20px rgba(0,0,0,0.05);">
+      <img src="https://via.placeholder.com/500x400?text=Vinyl" style="width:100%;height:100%;object-fit:cover;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);display:flex;align-items:flex-end;padding:20px;color:#fff;font-weight:700;">ভিনাইল স্টিকার</div>
+    </div>
+    <div style="height:250px;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 10px 20px rgba(0,0,0,0.05);">
+      <img src="https://via.placeholder.com/500x400?text=Card" style="width:100%;height:100%;object-fit:cover;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);display:flex;align-items:flex-end;padding:20px;color:#fff;font-weight:700;">ভিজিটিং কার্ড</div>
+    </div>
+    <div style="height:250px;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 10px 20px rgba(0,0,0,0.05);">
+      <img src="https://via.placeholder.com/500x400?text=Logo" style="width:100%;height:100%;object-fit:cover;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);display:flex;align-items:flex-end;padding:20px;color:#fff;font-weight:700;">লোগো ডিজাইন</div>
+    </div>
+    <div style="height:250px;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 10px 20px rgba(0,0,0,0.05);">
+      <img src="https://via.placeholder.com/500x400?text=CashMemo" style="width:100%;height:100%;object-fit:cover;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);display:flex;align-items:flex-end;padding:20px;color:#fff;font-weight:700;">ক্যাশ মেমো</div>
+    </div>
+  </div>
+</section>
+
+<!-- Location -->
+<section class="section">
+  <h2 class="section-title">আমাদের অবস্থান</h2>
+  <div style="border-radius:20px;overflow:hidden;border:4px solid #fff;box-shadow:0 10px 25px rgba(0,0,0,0.05);">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14502.834645229656!2d88.5721867!3d25.1278144!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fb6784d538604d%3A0x7d6a5c399557b447!2sSapahar!5e0!3m2!1sen!2sbd!4v1700000000000"
+      width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+  </div>
+</section>
+
+<!-- FAB -->
+<div class="fab-container">
+  <a href="https://facebook.com/yourpage" class="fab fb" target="_blank" title="ফেসবুক"><i class="fa-brands fa-facebook-f"></i></a>
+  <a href="mailto:your@email.com" class="fab em" title="ইমেইল করুন"><i class="fa-solid fa-envelope"></i></a>
+  <a href="https://wa.me/8801791835232" class="fab wa" target="_blank" title="হোয়াটসঅ্যাপ"><i class="fa-brands fa-whatsapp"></i></a>
+  <a href="tel:01791835232" class="fab ph" title="কল করুন"><i class="fa-solid fa-phone"></i></a>
+</div>
+
+<footer>
+  <p>&copy; <span id="year"></span> শাপলা আর্ট। সর্বস্বত্ব সংরক্ষিত।</p>
+</footer>
+
+<script>
+/* ── Year ── */
+document.getElementById('year').innerText = new Date().getFullYear();
+
+/* ── Scroll Animation ── */
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('animate__fadeInUp');
+      e.target.style.opacity = '1';
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.section').forEach(s => {
+  s.classList.add('animate__animated');
+  obs.observe(s);
+});
+
+/* ── Price Calculator ── */
+const rates = {
+  pana:  { unit: 12,   sqft: true  },
+  pvc:   { unit: 50,   sqft: true  },
+  vinyl: { unit: 35,   sqft: true  },
+  card:  { unit: 0.55, sqft: false },
+  memo:  { unit: 0.80, sqft: false },
+  id:    { unit: 50,   sqft: false },
+  logo:  { unit: 500,  sqft: false, fixed: true }
+};
+
+function calcPrice() {
+  const s      = document.getElementById('service').value;
+  const rate   = rates[s];
+  const isSqft = rate.sqft;
+  const isFixed = rate.fixed;
+
+  document.getElementById('size-row').style.display = isSqft  ? 'grid'  : 'none';
+  document.getElementById('qty-wrap').style.display  = isSqft  ? 'none'  : 'block';
+
+  let total = 0;
+  if (isSqft) {
+    const w = parseFloat(document.getElementById('bw').value) || 1;
+    const h = parseFloat(document.getElementById('bh').value) || 1;
+    total = w * h * rate.unit;
+  } else if (isFixed) {
+    total = rate.unit;
+  } else {
+    const qty = parseInt(document.getElementById('qty').value) || 1;
+    total = qty * rate.unit;
+  }
+
+  document.getElementById('calc-result').textContent = '৳' + Math.round(total).toLocaleString('bn-BD');
+}
+
+calcPrice();
+</script>
+
+</body>
+</html>
