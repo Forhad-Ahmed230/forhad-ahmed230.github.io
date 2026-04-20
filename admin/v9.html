@@ -20,12 +20,14 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, doc, getDocs, addDoc, setDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const firebaseConfig = {
-  apiKey:"AIzaSyAM-OM6zr3cL9PsxeOk1GdhOTtp1IqbojU",
-  authDomain:"notification-6e1fe.firebaseapp.com",
-  projectId:"notification-6e1fe",
-  storageBucket:"notification-6e1fe.firebasestorage.app",
-  messagingSenderId:"466180249875",
-  appId:"1:466180249875:web:ea0755d78d0f586f0b62e6"
+  apiKey: "AIzaSyBUjXbRJjDvwFD1qsfMDCL9O2Pwf28d8o8",
+  authDomain: "saas-e8d3d.firebaseapp.com",
+  databaseURL: "https://saas-e8d3d-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "saas-e8d3d",
+  storageBucket: "saas-e8d3d.firebasestorage.app",
+  messagingSenderId: "677979890322",
+  appId: "1:677979890322:web:815e0eaa4933a8556c3c4b",
+  measurementId: "G-LKWVX2E29C"
 };
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
