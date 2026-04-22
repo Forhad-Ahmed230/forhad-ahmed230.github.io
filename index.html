@@ -5,11 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>শাপলা আর্ট - প্রিমিয়াম পোর্টফোলিও</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
 <style>
+/* ══════════════════════════════
+   ০১. CSS Variables (ROOT)
+══════════════════════════════ */
 :root {
   --primary: #4f46e5;
   --secondary: #db2777;
@@ -18,6 +21,9 @@
   --text: #334155;
 }
 
+/* ══════════════════════════════
+   ০২. Reset & Base
+══════════════════════════════ */
 * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
 body {
@@ -27,7 +33,9 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Background ── */
+/* ══════════════════════════════
+   ০৩. Background Mesh
+══════════════════════════════ */
 .bg-mesh {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
   background-color: #f1f5f9;
@@ -36,21 +44,115 @@ body {
     radial-gradient(at 100% 100%, rgba(219,39,119,0.15) 0px, transparent 50%);
 }
 
-/* ── Header ── */
+/* ══════════════════════════════
+   ০৪. Header & Nav
+══════════════════════════════ */
 header {
-  background: rgba(255,255,255,0.7);
-  backdrop-filter: blur(12px);
-  padding: 15px 25px;
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(14px);
+  padding: 14px 30px;
   position: sticky; top: 0; z-index: 1000;
   display: flex; justify-content: space-between; align-items: center;
   border-bottom: 1px solid rgba(255,255,255,0.3);
+  gap: 15px;
 }
 .logo {
-  font-size: 22px; font-weight: 800; color: var(--primary);
+  font-size: 22px; font-weight: 900; color: var(--primary);
   display: flex; align-items: center; gap: 8px;
+  white-space: nowrap;
+}
+/* Desktop Nav */
+.header-nav {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+}
+.header-nav a {
+  text-decoration: none; font-size: 13px; font-weight: 600;
+  color: var(--dark); padding: 7px 14px; border-radius: 30px;
+  transition: 0.2s; white-space: nowrap;
+}
+.header-nav a:hover { background: #eef2ff; color: var(--primary); }
+.header-nav .btn-main-sm {
+  background: linear-gradient(135deg, var(--primary), #6366f1);
+  color: #fff !important;
+  box-shadow: 0 4px 10px rgba(79,70,229,0.25);
+}
+.header-nav .btn-main-sm:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(79,70,229,0.35); background: linear-gradient(135deg, var(--primary), #6366f1); }
+
+/* Hamburger (mobile) */
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 5px; background: none; border: none;
+}
+.hamburger span {
+  display: block; width: 24px; height: 2px;
+  background: var(--dark); border-radius: 2px; transition: 0.3s;
+}
+/* Mobile drawer */
+.mobile-nav {
+  display: none; position: fixed; top: 60px; left: 0; right: 0;
+  background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+  flex-direction: column; padding: 20px 25px; gap: 8px;
+  z-index: 999; border-bottom: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  text-decoration: none; font-size: 16px; font-weight: 600;
+  color: var(--dark); padding: 11px 16px; border-radius: 12px;
+  transition: 0.2s;
+}
+.mobile-nav a:hover { background: #eef2ff; color: var(--primary); }
+.mobile-nav .btn-wa-nav {
+  background: #25D366; color: #fff !important;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  border-radius: 12px; margin-top: 5px;
 }
 
-/* ── Hero ── */
+/* ══════════════════════════════
+   ০৫. Slider
+══════════════════════════════ */
+.slider-container {
+  position: relative; width: 100%; height: 450px;
+  overflow: hidden; background: #000;
+}
+.slider { width: 100%; height: 100%; }
+.slide {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  opacity: 0; transition: opacity 0.8s ease-in-out;
+  display: flex; align-items: center; justify-content: center;
+}
+.slide.active { opacity: 1; z-index: 10; }
+.slide img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.5); }
+.slide-content {
+  position: absolute; text-align: center; color: #fff; z-index: 20; padding: 0 20px;
+}
+.slide-content h2 {
+  font-size: clamp(28px, 5vw, 48px); font-weight: 800;
+  margin-bottom: 10px; text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+.slide-content p { font-size: clamp(16px, 2vw, 20px); opacity: 0.9; }
+.slider-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.2); backdrop-filter: blur(5px);
+  color: #fff; border: none; width: 45px; height: 45px;
+  border-radius: 50%; cursor: pointer; z-index: 30; transition: 0.3s;
+}
+.slider-btn:hover { background: var(--primary); }
+.prev { left: 20px; } .next { right: 20px; }
+.slider-dots {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 10px; z-index: 30;
+}
+.dot {
+  width: 10px; height: 10px; background: rgba(255,255,255,0.4);
+  border-radius: 50%; cursor: pointer; transition: 0.3s;
+}
+.dot.active { background: var(--primary); width: 25px; border-radius: 10px; }
+@media (max-width: 768px) { .slider-container { height: 300px; } }
+
+/* ══════════════════════════════
+   ০৬. Hero
+══════════════════════════════ */
 .hero { padding: 80px 20px; text-align: center; }
 .hero-biz-name {
   font-size: clamp(45px,10vw,75px); font-weight: 900; color: var(--primary);
@@ -58,18 +160,41 @@ header {
 }
 .hero h1 { font-size: clamp(22px,5vw,28px); font-weight: 700; color: var(--dark); margin-bottom: 15px; }
 .hero p  { font-size: 18px; color: #64748b; max-width: 600px; margin: 0 auto 30px; }
-
-/* ── Button ── */
 .btn-main {
   background: linear-gradient(135deg, var(--primary), #6366f1);
   color: #fff; padding: 16px 35px; border-radius: 50px; font-weight: 700;
   text-decoration: none; display: inline-block;
   box-shadow: 0 10px 20px rgba(79,70,229,0.3);
   transition: 0.3s; cursor: pointer; border: none; font-size: 18px;
+  font-family: 'Hind Siliguri', sans-serif;
 }
 .btn-main:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(79,70,229,0.4); }
 
-/* ── Section ── */
+/* ══════════════════════════════
+   ০৭. Stats Strip (NEW)
+══════════════════════════════ */
+.stats-strip {
+  background: linear-gradient(135deg, var(--primary), #6366f1);
+  padding: 30px 20px;
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 0;
+}
+.stat-item {
+  text-align: center; color: #fff;
+  padding: 15px 35px;
+  border-right: 1px solid rgba(255,255,255,0.2);
+}
+.stat-item:last-child { border-right: none; }
+.stat-num { font-size: 36px; font-weight: 900; line-height: 1; }
+.stat-label { font-size: 13px; opacity: 0.85; margin-top: 4px; font-weight: 500; }
+@media (max-width: 600px) {
+  .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.2); width: 50%; padding: 15px 10px; }
+  .stat-item:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.2); }
+  .stat-item:last-child, .stat-item:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+}
+
+/* ══════════════════════════════
+   ০৮. Section Base
+══════════════════════════════ */
 .section {
   padding: 60px 20px; max-width: 1200px; margin: 0 auto;
   text-align: center; opacity: 0;
@@ -84,7 +209,27 @@ header {
   position: absolute; bottom: 0; left: 0; border-radius: 2px;
 }
 
-/* ── Price Table ── */
+/* ══════════════════════════════
+   ০৯. Services Grid
+══════════════════════════════ */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+.service-card {
+  background: var(--glass); padding: 30px;
+  border-radius: 20px; border: 1px solid rgba(255,255,255,0.5);
+  text-align: center; transition: 0.3s;
+}
+.service-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(79,70,229,0.12); }
+.service-icon { font-size: 26px; color: var(--primary); margin-bottom: 15px; }
+.service-card h3 { font-size: 16px; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
+.service-card p { font-size: 14px; color: #64748b; line-height: 1.6; }
+
+/* ══════════════════════════════
+   ১০. Price Table
+══════════════════════════════ */
 .price-table-container {
   overflow-x: auto; background: var(--glass); border-radius: 20px;
   border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 10px 20px rgba(0,0,0,0.03);
@@ -97,7 +242,9 @@ header {
 .price-table tr:hover { background-color: #eff6ff !important; }
 .p-val { font-weight: 800; color: var(--primary); font-size: 18px; }
 
-/* ── Calculator ── */
+/* ══════════════════════════════
+   ১১. Calculator
+══════════════════════════════ */
 .calc-input {
   width: 100%; padding: 12px 15px; border-radius: 12px;
   border: 1px solid #e2e8f0; font-family: 'Hind Siliguri', sans-serif;
@@ -106,7 +253,170 @@ header {
 .calc-input:focus { outline: none; border-color: var(--primary); }
 .calc-label { font-weight: 600; display: block; margin-bottom: 8px; color: var(--dark); font-size: 15px; }
 
-/* ── FAB ── */
+/* ══════════════════════════════
+   ১২. Gallery
+══════════════════════════════ */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+.gallery-item {
+  height: 250px; border-radius: 20px; overflow: hidden;
+  position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.gallery-item:hover img { transform: scale(1.07); }
+.gallery-caption {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  display: flex; align-items: flex-end; padding: 20px;
+  color: #fff; font-weight: 700; font-size: 15px;
+}
+
+/* ══════════════════════════════
+   ১৩. Online Order Steps & Benefits
+══════════════════════════════ */
+.order-steps {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px; flex-wrap: wrap; margin-bottom: 50px;
+}
+.step-card {
+  background: var(--glass); border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 8px 20px rgba(79,70,229,0.08);
+  padding: 22px 18px; text-align: center; width: 150px;
+  position: relative; transition: 0.3s;
+}
+.step-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(79,70,229,0.15); }
+.step-num {
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+  width: 26px; height: 26px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #6366f1);
+  color: #fff; font-size: 12px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+.step-icon {
+  font-size: 32px; margin-bottom: 10px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.step-text { font-size: 13px; font-weight: 600; color: var(--dark); line-height: 1.5; }
+.step-arrow { font-size: 22px; color: var(--primary); opacity: 0.5; font-weight: 700; }
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 22px;
+}
+.benefit-card {
+  border-radius: 22px; overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+  border: 1px solid rgba(255,255,255,0.6);
+  background: var(--glass); transition: 0.35s; cursor: default;
+}
+.benefit-card:hover { transform: translateY(-6px); box-shadow: 0 18px 35px rgba(0,0,0,0.1); }
+.benefit-img {
+  height: 160px; display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.benefit-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.benefit-card:hover .benefit-img img { transform: scale(1.07); }
+.benefit-img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+  display: flex; align-items: center; justify-content: center;
+}
+.benefit-img-icon {
+  width: 62px; height: 62px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); backdrop-filter: blur(8px);
+  border: 2px solid rgba(255,255,255,0.35);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; color: #fff;
+}
+.benefit-body { padding: 20px 22px; text-align: left; }
+.benefit-body h3 { font-size: 17px; font-weight: 800; color: var(--dark); margin-bottom: 7px; }
+.benefit-body p  { font-size: 14px; color: #64748b; line-height: 1.65; }
+.benefit-badge {
+  display: inline-block; margin-top: 12px;
+  font-size: 11px; font-weight: 700; padding: 4px 12px;
+  border-radius: 30px; background: #eef2ff; color: var(--primary);
+}
+
+/* ══════════════════════════════
+   ১৪. Online CTA Banner
+══════════════════════════════ */
+.online-cta {
+  margin-top: 40px;
+  background: linear-gradient(135deg, var(--primary), #6366f1, var(--secondary));
+  border-radius: 24px; padding: 35px 30px;
+  display: flex; flex-direction: column; align-items: center; gap: 15px;
+  text-align: center; color: #fff;
+  box-shadow: 0 15px 35px rgba(79,70,229,0.25);
+}
+.online-cta h3 { font-size: 22px; font-weight: 800; }
+.online-cta p  { font-size: 15px; opacity: 0.85; max-width: 500px; }
+.cta-buttons { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.btn-wa {
+  background: #25D366; color: #fff; padding: 13px 26px; border-radius: 50px;
+  font-weight: 700; text-decoration: none; font-size: 15px;
+  display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 6px 18px rgba(37,211,102,0.35); transition: 0.3s;
+}
+.btn-fb {
+  background: #1877F2; color: #fff; padding: 13px 26px; border-radius: 50px;
+  font-weight: 700; text-decoration: none; font-size: 15px;
+  display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 6px 18px rgba(24,119,242,0.35); transition: 0.3s;
+}
+.btn-wa:hover, .btn-fb:hover { transform: translateY(-3px) scale(1.03); }
+
+/* ══════════════════════════════
+   ১৫. Order Form
+══════════════════════════════ */
+.order-form-wrapper {
+  max-width: 650px; margin: 0 auto;
+  background: var(--glass); border-radius: 24px; padding: 40px;
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.05); text-align: left;
+}
+.form-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 20px; margin-bottom: 20px;
+}
+.form-group { margin-bottom: 20px; }
+textarea.calc-input { resize: vertical; min-height: 100px; }
+.file-upload-box {
+  background: #f8fafc; border: 2px dashed #cbd5e1;
+  padding: 20px; border-radius: 12px; text-align: center;
+}
+.file-note { font-size: 13px; color: #64748b; margin-top: 8px; }
+.btn-wa-submit {
+  width: 100%; background: #25D366; color: #fff; padding: 16px;
+  border-radius: 12px; border: none; font-size: 18px; font-weight: 700;
+  font-family: 'Hind Siliguri', sans-serif; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  box-shadow: 0 8px 20px rgba(37,211,102,0.3); transition: 0.3s;
+}
+.btn-wa-submit:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(37,211,102,0.4); }
+
+/* ══════════════════════════════
+   ১৬. FAQ
+══════════════════════════════ */
+.faq-wrapper {
+  max-width: 800px; margin: 0 auto;
+  display: grid; gap: 15px; text-align: left;
+}
+.faq-card {
+  background: var(--glass); padding: 18px 25px;
+  border-radius: 15px; border-left: 5px solid var(--primary);
+}
+.faq-q { font-weight: 800; color: var(--dark); font-size: 16px; margin-bottom: 8px; display: block; }
+.faq-a { color: #64748b; font-size: 15px; line-height: 1.6; }
+
+/* ══════════════════════════════
+   ১৭. FAB
+══════════════════════════════ */
 .fab-container {
   position: fixed; bottom: 25px; right: 25px;
   display: flex; flex-direction: column; gap: 12px; z-index: 2000;
@@ -123,14 +433,81 @@ header {
 .ph  { background: #4f46e5; }
 .fab:hover { transform: scale(1.1) translateY(-5px); }
 
-/* ── Footer ── */
-footer { text-align: center; padding: 50px 20px; color: #94a3b8; font-size: 14px; }
+/* ══════════════════════════════
+   ১৮. Footer (with Proprietor)
+══════════════════════════════ */
+footer {
+  background: var(--dark);
+  color: #94a3b8; padding: 50px 20px 30px;
+  text-align: center;
+}
+.footer-inner {
+  max-width: 900px; margin: 0 auto;
+  display: flex; flex-direction: column; align-items: center; gap: 25px;
+}
+.footer-proprietor {
+  display: flex; align-items: center; gap: 18px;
+  background: rgba(255,255,255,0.06); border-radius: 20px;
+  padding: 20px 30px; border: 1px solid rgba(255,255,255,0.08);
+  text-align: left;
+}
+.footer-proprietor img {
+  width: 70px; height: 70px; border-radius: 50%;
+  object-fit: cover; border: 2px solid rgba(255,255,255,0.2);
+  flex-shrink: 0;
+}
+.footer-prop-name { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+.footer-prop-quote { font-size: 13px; color: #94a3b8; font-style: italic; margin-bottom: 10px; }
+.footer-social { display: flex; gap: 10px; }
+.footer-social a {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); color: #94a3b8;
+  display: flex; align-items: center; justify-content: center;
+  transition: 0.2s; font-size: 14px; text-decoration: none;
+}
+.footer-social a:hover { background: var(--primary); color: #fff; }
+.footer-divider { width: 100%; height: 1px; background: rgba(255,255,255,0.07); }
+.footer-address { font-size: 14px; color: #64748b; }
+.footer-copy { font-size: 13px; color: #475569; }
 
-/* ── Responsive ── */
+/* ══════════════════════════════
+   ১৯. Suggestion Chips (NEW)
+══════════════════════════════ */
+.suggestion-label {
+  font-size: 12px; font-weight: 600; color: #94a3b8;
+  margin-bottom: 8px; display: none; margin-top: -10px;
+}
+.suggestion-chips {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;
+}
+.chip {
+  background: #eef2ff; color: var(--primary);
+  border: 1px solid #c7d2fe; border-radius: 30px;
+  padding: 5px 13px; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: 0.2s;
+  font-family: 'Hind Siliguri', sans-serif;
+  white-space: nowrap;
+}
+.chip:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+.chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* ══════════════════════════════
+   ২০. Responsive
+══════════════════════════════ */
 @media (max-width: 768px) {
+  .header-nav { display: none; }
+  .hamburger { display: flex; }
   .hero h1 { font-size: 22px; }
   .section-title { font-size: 24px; }
-  .calc-grid { grid-template-columns: 1fr !important; }
+  .step-arrow { transform: rotate(90deg); }
+  .step-card { width: 130px; }
+  .online-cta h3 { font-size: 18px; }
+  .footer-proprietor { flex-direction: column; text-align: center; }
+  .footer-social { justify-content: center; }
+}
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; gap: 0; }
+  .order-form-wrapper { padding: 25px 20px; }
 }
 </style>
 </head>
@@ -138,78 +515,153 @@ footer { text-align: center; padding: 50px 20px; color: #94a3b8; font-size: 14px
 
 <div class="bg-mesh"></div>
 
-<!-- Header -->
+<!-- ══ Header ══ -->
 <header>
   <div class="logo">
     <i class="fa-solid fa-wand-magic-sparkles"></i>
     <span>শাপলা আর্ট</span>
   </div>
-  <div class="header-right">
-    <a href="#prices" class="btn-main" style="padding:8px 18px;font-size:12px;box-shadow:none;">রেট চার্ট</a>
-  </div>
+
+  <!-- Desktop Nav -->
+  <nav class="header-nav">
+    <a href="#services">সেবাসমূহ</a>
+    <a href="#prices">মূল্য তালিকা</a>
+    <a href="#gallery">গ্যালারি</a>
+    <a href="#order-form-section">অর্ডার করুন</a>
+    <a href="https://wa.me/8801791835232" target="_blank" class="btn-main-sm">
+      <i class="fa-brands fa-whatsapp" style="margin-right:5px;"></i>WhatsApp
+    </a>
+  </nav>
+
+  <!-- Hamburger (Mobile) -->
+  <button class="hamburger" id="hamburger" aria-label="মেনু">
+    <span></span><span></span><span></span>
+  </button>
 </header>
 
-<!-- Hero -->
+<!-- Mobile Nav Drawer -->
+<nav class="mobile-nav" id="mobile-nav">
+  <a href="#services" onclick="closeNav()"><i class="fa-solid fa-print" style="margin-right:8px;color:var(--primary);"></i>সেবাসমূহ</a>
+  <a href="#prices" onclick="closeNav()"><i class="fa-solid fa-tags" style="margin-right:8px;color:var(--primary);"></i>মূল্য তালিকা</a>
+  <a href="#gallery" onclick="closeNav()"><i class="fa-solid fa-images" style="margin-right:8px;color:var(--primary);"></i>গ্যালারি</a>
+  <a href="#order-form-section" onclick="closeNav()"><i class="fa-solid fa-pen-to-square" style="margin-right:8px;color:var(--primary);"></i>অর্ডার করুন</a>
+  <a href="https://wa.me/8801791835232" target="_blank" class="btn-wa-nav">
+    <i class="fa-brands fa-whatsapp"></i>WhatsApp-এ মেসেজ করুন
+  </a>
+</nav>
+
+<!-- ══ Slider ══ -->
+<div class="slider-container">
+  <div class="slider">
+    <div class="slide active">
+      <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1200&q=80" alt="Graphic Design">
+      <div class="slide-content">
+        <h2>সেরা ডিজাইনে অনন্য ছাপ</h2>
+        <p>আপনার ব্যবসার ব্র্যান্ডিং হোক প্রফেশনাল ও আধুনিক।</p>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?w=1200&q=80" alt="Digital Printing">
+      <div class="slide-content">
+        <h2>নিখুঁত ও উজ্জ্বল প্রিন্টিং</h2>
+        <p>প্যানা, পিভিসি এবং ভিনাইল প্রিন্টে আমরা দিচ্ছি শতভাগ নিশ্চয়তা।</p>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="https://images.unsplash.com/photo-1586717791821-3f44a563cc4c?w=1200&q=80" alt="Branding">
+      <div class="slide-content">
+        <h2>শাপলা আর্ট - আপনার আস্থার নাম</h2>
+        <p>তিলনা রোড, সাপাহার, নওগাঁ।</p>
+      </div>
+    </div>
+  </div>
+  <button class="slider-btn prev" onclick="changeSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+  <button class="slider-btn next" onclick="changeSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+  <div class="slider-dots">
+    <span class="dot active" onclick="currentSlide(0)"></span>
+    <span class="dot" onclick="currentSlide(1)"></span>
+    <span class="dot" onclick="currentSlide(2)"></span>
+  </div>
+</div>
+
+<!-- ══ Hero ══ -->
 <section class="hero animate__animated animate__fadeIn">
   <h2 class="hero-biz-name animate__animated animate__zoomIn">শাপলা আর্ট</h2>
   <h1 class="animate__animated animate__fadeInUp">প্রিন্টিং জগতে আধুনিকতার ছোঁয়া</h1>
   <p class="animate__animated animate__fadeInUp animate__delay-1s">তিলনা রোড, মন্ডল মোড়, ফৌজিয়া প্লাজা, সাপাহার নওগাঁ।</p>
-  <a href="tel:01791835232" class="btn-main animate__animated animate__pulse animate__infinite">অর্ডার করতে কল করুন</a>
+  <a href="tel:01791835232" class="btn-main animate__animated animate__fadeInUp animate__delay-1s">
+    <i class="fa-solid fa-phone" style="margin-right:8px;"></i>অর্ডার করতে কল করুন
+  </a>
 </section>
 
-<!-- Proprietor -->
-<section class="section">
-  <h2 class="section-title">প্রোপাইটর প্রোফাইল</h2>
-  <div style="background:var(--glass);border-radius:24px;padding:35px;border:1px solid rgba(255,255,255,0.5);box-shadow:0 10px 30px rgba(0,0,0,0.03);max-width:450px;margin:0 auto;text-align:center;">
-    <img src="https://forhad-ahmed230.github.io/image/profile.jpg" alt="Proprietor" style="width:210px;height:210px;border-radius:50%;object-fit:cover;border:3px solid #fff;margin-bottom:15px;">
-    <h3 style="font-size:24px;font-weight:700;color:var(--dark);margin-bottom:10px;">ফরহাদ আহমেদ</h3>
-    <p style="font-size:16px;color:#475569;font-weight:500;font-style:italic;">"সেরা ডিজাইন আর নিখুঁত প্রিন্টিংয়ে আপনার আস্থার ঠিকানা।"</p>
-    <div style="display:flex;justify-content:center;gap:12px;margin-top:20px;">
-      <a href="https://www.facebook.com/contacts2forhad" target="_blank" style="width:40px;height:40px;border-radius:50%;background:#eef2ff;color:#1877F2;display:flex;align-items:center;justify-content:center;"><i class="fa-brands fa-facebook-f"></i></a>
-      <a href="https://wa.me/8801791835232" target="_blank" style="width:40px;height:40px;border-radius:50%;background:#eef2ff;color:#25D366;display:flex;align-items:center;justify-content:center;"><i class="fa-brands fa-whatsapp"></i></a>
-      <a href="mailto:farhadr230@email.com" style="width:40px;height:40px;border-radius:50%;background:#eef2ff;color:#ea4335;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-envelope"></i></a>
-    </div>
+<!-- ══ Stats Strip (NEW) ══ -->
+<div class="stats-strip">
+  <div class="stat-item">
+    <div class="stat-num">৫+</div>
+    <div class="stat-label">বছরের অভিজ্ঞতা</div>
   </div>
-</section>
+  <div class="stat-item">
+    <div class="stat-num">৫০০+</div>
+    <div class="stat-label">সন্তুষ্ট ক্লায়েন্ট</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">১০+</div>
+    <div class="stat-label">সার্ভিস ক্যাটাগরি</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">২৪ঘণ্টা</div>
+    <div class="stat-label">দ্রুত ডেলিভারি</div>
+  </div>
+</div>
 
-<!-- Services -->
-<section class="section">
+<!-- ══ Services ══ -->
+<section class="section" id="services">
   <h2 class="section-title">আমাদের সেবাসমূহ</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
-    <div style="background:var(--glass);padding:30px;border-radius:20px;border:1px solid rgba(255,255,255,0.5);">
-      <div style="font-size:26px;color:var(--primary);margin-bottom:15px;"><i class="fa-solid fa-flag"></i></div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon"><i class="fa-solid fa-flag"></i></div>
       <h3>প্যানা / ব্যানার</h3>
-      <p style="font-size:14px;color:#64748b;">উন্নত ফ্লেক্স প্রিন্টে টেকসই ও উজ্জ্বল রঙের প্যানা ও ব্যানার।</p>
+      <p>উন্নত ফ্লেক্স প্রিন্টে টেকসই ও উজ্জ্বল রঙের প্যানা ও ব্যানার।</p>
     </div>
-    <div style="background:var(--glass);padding:30px;border-radius:20px;border:1px solid rgba(255,255,255,0.5);">
-      <div style="font-size:26px;color:var(--primary);margin-bottom:15px;"><i class="fa-solid fa-layer-group"></i></div>
+    <div class="service-card">
+      <div class="service-icon"><i class="fa-solid fa-layer-group"></i></div>
       <h3>পিভিসি</h3>
-      <p style="font-size:14px;color:#64748b;">উচ্চমানের পিভিসি শিটে দীর্ঘস্থায়ী প্রিন্ট ও সাইনেজ।</p>
+      <p>উচ্চমানের পিভিসি শিটে দীর্ঘস্থায়ী প্রিন্ট ও সাইনেজ।</p>
     </div>
-    <div style="background:var(--glass);padding:30px;border-radius:20px;border:1px solid rgba(255,255,255,0.5);">
-      <div style="font-size:26px;color:var(--primary);margin-bottom:15px;"><i class="fa-solid fa-stamp"></i></div>
+    <div class="service-card">
+      <div class="service-icon"><i class="fa-solid fa-stamp"></i></div>
       <h3>ভিনাইল স্টিকার</h3>
-      <p style="font-size:14px;color:#64748b;">গাড়ি, শোকেস ও দেয়ালের জন্য কাস্টম ভিনাইল স্টিকার।</p>
+      <p>গাড়ি, শোকেস ও দেয়ালের জন্য কাস্টম ভিনাইল স্টিকার।</p>
     </div>
-    <div style="background:var(--glass);padding:30px;border-radius:20px;border:1px solid rgba(255,255,255,0.5);">
-      <div style="font-size:26px;color:var(--primary);margin-bottom:15px;"><i class="fa-solid fa-address-card"></i></div>
+    <div class="service-card">
+      <div class="service-icon"><i class="fa-solid fa-address-card"></i></div>
       <h3>ভিজিটিং কার্ড</h3>
-      <p style="font-size:14px;color:#64748b;">ম্যাট ও গ্লসি ল্যামিনেশনে প্রিমিয়াম কার্ড।</p>
+      <p>ম্যাট ও গ্লসি ল্যামিনেশনে প্রিমিয়াম কার্ড।</p>
     </div>
-    <div style="background:var(--glass);padding:30px;border-radius:20px;border:1px solid rgba(255,255,255,0.5);">
-      <div style="font-size:26px;color:var(--primary);margin-bottom:15px;"><i class="fa-solid fa-images"></i></div>
-      <h3>ব্যানার ও সাইনবোর্ড</h3>
-      <p style="font-size:14px;color:#64748b;">উন্নত মানের ডিজিটাল কালার প্রিন্ট।</p>
-    </div>
-    <div style="background:var(--glass);padding:30px;border-radius:20px;border:1px solid rgba(255,255,255,0.5);">
-      <div style="font-size:26px;color:var(--primary);margin-bottom:15px;"><i class="fa-solid fa-file-invoice"></i></div>
+    <div class="service-card">
+      <div class="service-icon"><i class="fa-solid fa-file-invoice"></i></div>
       <h3>ক্যাশ মেমো</h3>
-      <p style="font-size:14px;color:#64748b;">অফিস ও দোকানের জন্য কাস্টম মেমো বই।</p>
+      <p>অফিস ও দোকানের জন্য কাস্টম মেমো বই।</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><i class="fa-solid fa-id-badge"></i></div>
+      <h3>আইডি কার্ড</h3>
+      <p>স্কুল, অফিস ও প্রতিষ্ঠানের জন্য রিবনসহ আইডি কার্ড।</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><i class="fa-solid fa-wand-sparkles"></i></div>
+      <h3>লোগো ডিজাইন</h3>
+      <p>ব্র্যান্ড পরিচিতির জন্য প্রফেশনাল ও ইউনিক লোগো।</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><i class="fa-solid fa-shirt"></i></div>
+      <h3>সাবলিমেশন প্রিন্ট</h3>
+      <p>মগ, টি-শার্ট ও গিফট আইটেমে কাস্টম সাবলিমেশন।</p>
     </div>
   </div>
 </section>
 
-<!-- Price Table -->
+<!-- ══ Price Table ══ -->
 <section id="prices" class="section">
   <h2 class="section-title">সার্ভিস ও মূল্য তালিকা</h2>
   <div class="price-table-container">
@@ -225,17 +677,16 @@ footer { text-align: center; padding: 50px 20px; color: #94a3b8; font-size: 14px
         <tr><td>ক্যাশ মেমো (১০০ পাতা)</td><td><span class="p-val">৳৮০</span></td></tr>
         <tr><td>আইডি কার্ড (রিবনসহ)</td><td><span class="p-val">৳৫০</span></td></tr>
         <tr><td>লোগো ডিজাইন (প্রফেশনাল)</td><td><span class="p-val">৳৫০০</span></td></tr>
+        <tr><td>সাবলিমেশন মগ / টি-শার্ট</td><td><span class="p-val">৳১৫০+</span></td></tr>
       </tbody>
     </table>
   </div>
 </section>
 
-<!-- Price Calculator -->
+<!-- ══ Price Calculator ══ -->
 <section id="calculator" class="section">
   <h2 class="section-title">প্রাইস ক্যালকুলেটর</h2>
   <div style="max-width:600px;margin:0 auto;background:var(--glass);border-radius:24px;padding:35px;border:1px solid rgba(255,255,255,0.5);box-shadow:0 10px 25px rgba(0,0,0,0.04);">
-
-    <!-- Service + Qty row -->
     <div class="calc-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;">
       <div>
         <label class="calc-label">সার্ভিস বেছে নিন</label>
@@ -247,6 +698,7 @@ footer { text-align: center; padding: 50px 20px; color: #94a3b8; font-size: 14px
           <option value="memo">ক্যাশ মেমো (৳০.৮০/পাতা)</option>
           <option value="id">আইডি কার্ড (৳৫০/পিস)</option>
           <option value="logo">লোগো ডিজাইন (৳৫০০)</option>
+          <option value="sub">সাবলিমেশন (৳১৫০/পিস)</option>
         </select>
       </div>
       <div id="qty-wrap">
@@ -254,8 +706,6 @@ footer { text-align: center; padding: 50px 20px; color: #94a3b8; font-size: 14px
         <input type="number" id="qty" value="100" min="1" oninput="calcPrice()" class="calc-input">
       </div>
     </div>
-
-    <!-- Size row (sqft items) -->
     <div id="size-row" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;" class="calc-grid">
       <div>
         <label class="calc-label">প্রস্থ (ফুট)</label>
@@ -266,14 +716,11 @@ footer { text-align: center; padding: 50px 20px; color: #94a3b8; font-size: 14px
         <input type="number" id="bh" value="2" min="1" oninput="calcPrice()" class="calc-input">
       </div>
     </div>
-
-    <!-- Result -->
     <div style="background:linear-gradient(135deg,var(--primary),#6366f1);border-radius:16px;padding:25px;text-align:center;color:#fff;margin-top:10px;">
       <p style="font-size:15px;opacity:0.85;margin-bottom:6px;">আনুমানিক মূল্য</p>
       <p id="calc-result" style="font-size:42px;font-weight:900;margin:0 0 6px;">৳৩৬</p>
       <p style="font-size:12px;opacity:0.7;">* ডিজাইন ও ডেলিভারি চার্জ আলাদা হতে পারে। নিশ্চিত মূল্যে কল করুন।</p>
     </div>
-
     <div style="text-align:center;margin-top:20px;">
       <a href="tel:01791835232" class="btn-main" style="font-size:15px;padding:12px 28px;box-shadow:none;">
         <i class="fa-solid fa-phone" style="margin-right:8px;"></i>অর্ডার করতে কল করুন
@@ -282,57 +729,224 @@ footer { text-align: center; padding: 50px 20px; color: #94a3b8; font-size: 14px
   </div>
 </section>
 
-<!-- FAQ -->
+<!-- ══ Gallery ══ -->
+<section class="section" id="gallery">
+  <h2 class="section-title">গ্যালারি</h2>
+  <div class="gallery-grid">
+    <div class="gallery-item">
+      <img src="https://forhad-ahmed230.github.io/image/pana.jpg" alt="প্যানা / ব্যানার" loading="lazy">
+      <div class="gallery-caption">প্যানা / ব্যানার</div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://forhad-ahmed230.github.io/image/pvc.jpg" alt="পিভিসি" loading="lazy">
+      <div class="gallery-caption">পিভিসি</div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://forhad-ahmed230.github.io/image/sticker.jpg" alt="ভিনাইল স্টিকার" loading="lazy">
+      <div class="gallery-caption">ভিনাইল স্টিকার</div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://forhad-ahmed230.github.io/image/visiting%20card.jpg" alt="ভিজিটিং কার্ড" loading="lazy">
+      <div class="gallery-caption">ভিজিটিং কার্ড</div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://forhad-ahmed230.github.io/image/logo.jpg" alt="লোগো ডিজাইন" loading="lazy">
+      <div class="gallery-caption">লোগো ডিজাইন</div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://forhad-ahmed230.github.io/image/memo.jpg" alt="ক্যাশ মেমো" loading="lazy">
+      <div class="gallery-caption">ক্যাশ মেমো</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ Online Order Benefits ══ -->
+<section class="section" id="online-benefits">
+  <h2 class="section-title">অনলাইনে অর্ডারের সুবিধা</h2>
+  <div class="order-steps">
+    <div class="step-card">
+      <div class="step-num">১</div>
+      <div class="step-icon"><i class="fa-brands fa-whatsapp"></i></div>
+      <div class="step-text">WhatsApp বা Facebook-এ মেসেজ করুন</div>
+    </div>
+    <div class="step-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+    <div class="step-card">
+      <div class="step-num">২</div>
+      <div class="step-icon"><i class="fa-solid fa-image"></i></div>
+      <div class="step-text">ডিজাইন বা তথ্য পাঠান</div>
+    </div>
+    <div class="step-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+    <div class="step-card">
+      <div class="step-num">৩</div>
+      <div class="step-icon"><i class="fa-solid fa-circle-check"></i></div>
+      <div class="step-text">ডিজাইন অনুমোদন করুন</div>
+    </div>
+    <div class="step-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+    <div class="step-card">
+      <div class="step-num">৪</div>
+      <div class="step-icon"><i class="fa-solid fa-truck-fast"></i></div>
+      <div class="step-text">২৪–৪৮ ঘণ্টায় ডেলিভারি পান</div>
+    </div>
+  </div>
+
+  <div class="benefits-grid">
+    <div class="benefit-card">
+      <div class="benefit-img">
+        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80" alt="ঘরে বসে অর্ডার" loading="lazy">
+        <div class="benefit-img-overlay"><div class="benefit-img-icon"><i class="fa-solid fa-house-laptop"></i></div></div>
+      </div>
+      <div class="benefit-body">
+        <h3>ঘরে বসে অর্ডার করুন</h3>
+        <p>দেশের যেকোনো প্রান্ত থেকে ফোন বা মেসেজেই অর্ডার দিন। দোকানে আসার প্রয়োজন নেই।</p>
+        <span class="benefit-badge"><i class="fa-solid fa-location-dot" style="margin-right:4px;"></i>সারাদেশে গ্রহণযোগ্য</span>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-img">
+        <img src="https://images.unsplash.com/photo-1611926653458-09294b3142bf?w=600&q=80" alt="WhatsApp অর্ডার" loading="lazy">
+        <div class="benefit-img-overlay"><div class="benefit-img-icon"><i class="fa-brands fa-whatsapp"></i></div></div>
+      </div>
+      <div class="benefit-body">
+        <h3>WhatsApp / Facebook অর্ডার</h3>
+        <p>ছবি পাঠান, রিকোয়ারমেন্ট বলুন। সহজেই মেসেজে অর্ডার নিশ্চিত হয়ে যায়।</p>
+        <span class="benefit-badge"><i class="fa-solid fa-bolt" style="margin-right:4px;"></i>দ্রুত রেসপন্স</span>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-img">
+        <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&q=80" alt="ফ্রি ডিজাইন" loading="lazy">
+        <div class="benefit-img-overlay"><div class="benefit-img-icon"><i class="fa-solid fa-palette"></i></div></div>
+      </div>
+      <div class="benefit-body">
+        <h3>বিনামূল্যে বেসিক ডিজাইন</h3>
+        <p>প্রিন্টিং অর্ডারের সাথে বেসিক ডিজাইন সম্পূর্ণ বিনামূল্যে। কোনো লুকানো চার্জ নেই।</p>
+        <span class="benefit-badge"><i class="fa-solid fa-tag" style="margin-right:4px;"></i>ডিজাইন ফ্রি</span>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-img">
+        <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&q=80" alt="দ্রুত ডেলিভারি" loading="lazy">
+        <div class="benefit-img-overlay"><div class="benefit-img-icon"><i class="fa-solid fa-clock"></i></div></div>
+      </div>
+      <div class="benefit-body">
+        <h3>মাত্র ২৪–৪৮ ঘণ্টায় ডেলিভারি</h3>
+        <p>ডিজাইন কনফার্ম হওয়ার পর মাত্র ১ থেকে ২ কার্যদিবসের মধ্যে আপনার পণ্য তৈরি।</p>
+        <span class="benefit-badge"><i class="fa-solid fa-fire" style="margin-right:4px;"></i>এক্সপ্রেস প্রিন্ট</span>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-img">
+        <img src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=600&q=80" alt="সারাদেশে কুরিয়ার" loading="lazy">
+        <div class="benefit-img-overlay"><div class="benefit-img-icon"><i class="fa-solid fa-box-open"></i></div></div>
+      </div>
+      <div class="benefit-body">
+        <h3>সারাদেশে কুরিয়ার সেবা</h3>
+        <p>সাপাহার থেকে ঢাকা, চট্টগ্রাম সহ যেকোনো জেলায় কুরিয়ারে পণ্য পাঠানো হয়।</p>
+        <span class="benefit-badge"><i class="fa-solid fa-map-location-dot" style="margin-right:4px;"></i>সারা বাংলাদেশ</span>
+      </div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-img">
+        <img src="https://images.unsplash.com/photo-1580519542036-c47de6196ba5?w=600&q=80" alt="সাশ্রয়ী মূল্য" loading="lazy">
+        <div class="benefit-img-overlay"><div class="benefit-img-icon"><i class="fa-solid fa-bangladeshi-taka-sign"></i></div></div>
+      </div>
+      <div class="benefit-body">
+        <h3>সাশ্রয়ী ও সেরা মূল্য</h3>
+        <p>বাজারের সেরা দামে প্রিমিয়াম মানের প্রিন্টিং। বাল্ক অর্ডারে বিশেষ ছাড় পাওয়া যায়।</p>
+        <span class="benefit-badge"><i class="fa-solid fa-percent" style="margin-right:4px;"></i>বাল্কে ডিসকাউন্ট</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="online-cta">
+    <h3>🛒 এখনই অনলাইনে অর্ডার করুন!</h3>
+    <p>WhatsApp বা Facebook-এ মেসেজ করুন, আমরা সাথে সাথে সাড়া দেব।</p>
+    <div class="cta-buttons">
+      <a href="https://wa.me/8801791835232" target="_blank" class="btn-wa">
+        <i class="fa-brands fa-whatsapp"></i> WhatsApp করুন
+      </a>
+      <a href="https://www.facebook.com/contacts2forhad" target="_blank" class="btn-fb">
+        <i class="fa-brands fa-facebook-f"></i> Facebook করুন
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ Order Form ══ -->
+<section class="section" id="order-form-section">
+  <h2 class="section-title">অর্ডার কনফার্ম করুন</h2>
+  <div class="order-form-wrapper">
+    <form id="wa-order-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="calc-label">আপনার নাম *</label>
+          <input type="text" id="c-name" class="calc-input" placeholder="যেমন: আব্দুল্লাহ" required>
+        </div>
+        <div class="form-group">
+          <label class="calc-label">মোবাইল নাম্বার *</label>
+          <input type="tel" id="c-phone" class="calc-input" placeholder="017XXXXXXXX" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="calc-label">কোন সার্ভিসটি চাচ্ছেন? *</label>
+        <select id="c-service" class="calc-input" required>
+          <option value="" disabled selected>সার্ভিস নির্বাচন করুন</option>
+          <option value="প্যানা / ব্যানার">প্যানা / ব্যানার</option>
+          <option value="পিভিসি">পিভিসি</option>
+          <option value="ভিনাইল স্টিকার">ভিনাইল স্টিকার</option>
+          <option value="ভিজিটিং কার্ড">ভিজিটিং কার্ড</option>
+          <option value="ক্যাশ মেমো">ক্যাশ মেমো</option>
+          <option value="আইডি কার্ড">আইডি কার্ড</option>
+          <option value="লোগো ডিজাইন">লোগো ডিজাইন</option>
+          <option value="সাবলিমেশন">সাবলিমেশন</option>
+          <option value="অন্যান্য">অন্যান্য</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="calc-label">অর্ডারের বিস্তারিত (সাইজ, লেখা বা বিশেষ নির্দেশনা)</label>
+        <span class="suggestion-label">⚡ দ্রুত যুক্ত করুন (ক্লিক করুন):</span>
+        <div class="suggestion-chips" id="suggestion-chips"></div>
+        <textarea id="c-details" class="calc-input" rows="3" placeholder="এখানে লিখুন..."></textarea>
+      </div>
+      <div class="form-group file-upload-box">
+        <label class="calc-label"><i class="fa-solid fa-cloud-arrow-up"></i> রেফারেন্স ছবি বা ফাইল (ঐচ্ছিক)</label>
+        <p class="file-note">আপনার যদি কোনো ডেমো ডিজাইন বা ছবি থাকে, তবে ফর্মটি সাবমিট করার পর হোয়াটসঅ্যাপ চ্যাটে সরাসরি আপলোড করে দিন।</p>
+      </div>
+      <button type="submit" class="btn-wa-submit">
+        <i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপে অর্ডার পাঠান
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
 <section class="section">
   <h2 class="section-title">সাধারণ কিছু প্রশ্ন</h2>
-  <div style="max-width:800px;margin:0 auto;display:grid;gap:15px;text-align:left;">
-    <div style="background:var(--glass);padding:18px 25px;border-radius:15px;border-left:5px solid var(--primary);">
-      <span style="font-weight:800;color:var(--dark);font-size:16px;margin-bottom:8px;display:block;">১. ডেলিভারি পেতে কতদিন লাগে?</span>
-      <p style="color:#64748b;font-size:15px;">ডিজাইন কনফার্ম হওয়ার ২৪-৪৮ ঘণ্টার মধ্যে ডেলিভারি দেওয়া হয়।</p>
+  <div class="faq-wrapper">
+    <div class="faq-card">
+      <span class="faq-q">১. ডেলিভারি পেতে কতদিন লাগে?</span>
+      <p class="faq-a">ডিজাইন কনফার্ম হওয়ার ২৪-৪৮ ঘণ্টার মধ্যে ডেলিভারি দেওয়া হয়।</p>
     </div>
-    <div style="background:var(--glass);padding:18px 25px;border-radius:15px;border-left:5px solid var(--primary);">
-      <span style="font-weight:800;color:var(--dark);font-size:16px;margin-bottom:8px;display:block;">২. আপনারা কি অনলাইনে অর্ডার নেন?</span>
-      <p style="color:#64748b;font-size:15px;">হ্যাঁ, হোয়াটসঅ্যাপ বা ফেসবুকের মাধ্যমে দেশের যেকোনো প্রান্ত থেকে অর্ডার নেওয়া হয়।</p>
+    <div class="faq-card">
+      <span class="faq-q">২. আপনারা কি অনলাইনে অর্ডার নেন?</span>
+      <p class="faq-a">হ্যাঁ, হোয়াটসঅ্যাপ বা ফেসবুকের মাধ্যমে দেশের যেকোনো প্রান্ত থেকে অর্ডার নেওয়া হয়।</p>
     </div>
-    <div style="background:var(--glass);padding:18px 25px;border-radius:15px;border-left:5px solid var(--primary);">
-      <span style="font-weight:800;color:var(--dark);font-size:16px;margin-bottom:8px;display:block;">৩. ডিজাইন চার্জ কি আলাদা দিতে হয়?</span>
-      <p style="color:#64748b;font-size:15px;">প্রিন্টিং অর্ডারের সাথে বেসিক ডিজাইন ফ্রি, তবে জটিল লোগোর জন্য সামান্য চার্জ প্রযোজ্য।</p>
+    <div class="faq-card">
+      <span class="faq-q">৩. ডিজাইন চার্জ কি আলাদা দিতে হয়?</span>
+      <p class="faq-a">প্রিন্টিং অর্ডারের সাথে বেসিক ডিজাইন ফ্রি, তবে জটিল লোগোর জন্য সামান্য চার্জ প্রযোজ্য।</p>
     </div>
-  </div>
-</section>
-
-<!-- Gallery -->
-<section class="section">
-  <h2 class="section-title">গ্যালারি</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;">
-    <div style="height:250px;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 10px 20px rgba(0,0,0,0.05);">
-      <img src="https://forhad-ahmed230.github.io/image/pana.jpg" style="width:100%;height:100%;object-fit:cover;">
-      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);display:flex;align-items:flex-end;padding:20px;color:#fff;font-weight:700;">প্যানা / ব্যানার</div>
+    <div class="faq-card">
+      <span class="faq-q">৪. বাল্ক অর্ডারে কি ছাড় পাওয়া যায়?</span>
+      <p class="faq-a">হ্যাঁ, বড় পরিমাণ অর্ডারে বিশেষ ছাড় প্রযোজ্য। বিস্তারিত জানতে সরাসরি কল করুন।</p>
     </div>
-    <div style="height:250px;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 10px 20px rgba(0,0,0,0.05);">
-      <img src="https://forhad-ahmed230.github.io/image/pvc.jpg" style="width:100%;height:100%;object-fit:cover;">
-      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);display:flex;align-items:flex-end;padding:20px;color:#fff;font-weight:700;">পিভিসি</div>
-    </div>
-    <div style="height:250px;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 10px 20px rgba(0,0,0,0.05);">
-      <img src="https://forhad-ahmed230.github.io/image/sticker.jpg" style="width:100%;height:100%;object-fit:cover;">
-      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);display:flex;align-items:flex-end;padding:20px;color:#fff;font-weight:700;">ভিনাইল স্টিকার</div>
-    </div>
-    <div style="height:250px;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 10px 20px rgba(0,0,0,0.05);">
-      <img src="https://forhad-ahmed230.github.io/image/visiting%20card.jpg" style="width:100%;height:100%;object-fit:cover;">
-      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);display:flex;align-items:flex-end;padding:20px;color:#fff;font-weight:700;">ভিজিটিং কার্ড</div>
-    </div>
-    <div style="height:250px;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 10px 20px rgba(0,0,0,0.05);">
-      <img src="https://forhad-ahmed230.github.io/image/logo.jpg" style="width:100%;height:100%;object-fit:cover;">
-      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);display:flex;align-items:flex-end;padding:20px;color:#fff;font-weight:700;">লোগো ডিজাইন</div>
-    </div>
-    <div style="height:250px;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 10px 20px rgba(0,0,0,0.05);">
-      <img src="https://forhad-ahmed230.github.io/image/memo.jpg" style="width:100%;height:100%;object-fit:cover;">
-      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);display:flex;align-items:flex-end;padding:20px;color:#fff;font-weight:700;">ক্যাশ মেমো</div>
+    <div class="faq-card">
+      <span class="faq-q">৫. পেমেন্ট কিভাবে করবো?</span>
+      <p class="faq-a">বিকাশ, নগদ, রকেট বা সরাসরি দোকানে এসে ক্যাশে পেমেন্ট করা যাবে।</p>
     </div>
   </div>
 </section>
 
-<!-- Location -->
+<!-- ══ Location ══ -->
 <section class="section">
   <h2 class="section-title">আমাদের অবস্থান</h2>
   <div style="border-radius:20px;overflow:hidden;border:4px solid #fff;box-shadow:0 10px 25px rgba(0,0,0,0.05);">
@@ -341,7 +955,7 @@ footer { text-align: center; padding: 50px 20px; color: #94a3b8; font-size: 14px
   </div>
 </section>
 
-<!-- FAB -->
+<!-- ══ FAB ══ -->
 <div class="fab-container">
   <a href="https://www.facebook.com/contacts2forhad" class="fab fb" target="_blank" title="ফেসবুক"><i class="fa-brands fa-facebook-f"></i></a>
   <a href="mailto:farhadr230@email.com" class="fab em" title="ইমেইল করুন"><i class="fa-solid fa-envelope"></i></a>
@@ -349,15 +963,109 @@ footer { text-align: center; padding: 50px 20px; color: #94a3b8; font-size: 14px
   <a href="tel:01791835232" class="fab ph" title="কল করুন"><i class="fa-solid fa-phone"></i></a>
 </div>
 
+<!-- ══ Footer (with Proprietor) ══ -->
 <footer>
-  <p>&copy; <span id="year"></span> শাপলা আর্ট। সর্বস্বত্ব সংরক্ষিত।</p>
+  <div class="footer-inner">
+    <div class="footer-proprietor">
+      <img src="https://forhad-ahmed230.github.io/image/profile.jpg" alt="Forhad Ahmed">
+      <div>
+        <div class="footer-prop-name">ফরহাদ আহমেদ</div>
+        <div class="footer-prop-quote">"সেরা ডিজাইন আর নিখুঁত প্রিন্টিংয়ে আপনার আস্থার ঠিকানা।"</div>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/contacts2forhad" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://wa.me/8801791835232" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="mailto:farhadr230@email.com"><i class="fa-solid fa-envelope"></i></a>
+          <a href="tel:01791835232"><i class="fa-solid fa-phone"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <p class="footer-address"><i class="fa-solid fa-location-dot" style="margin-right:6px;color:#4f46e5;"></i>তিলনা রোড, মন্ডল মোড়, ফৌজিয়া প্লাজা, সাপাহার, নওগাঁ</p>
+    <p class="footer-copy">&copy; <span id="year"></span> শাপলা আর্ট। সর্বস্বত্ব সংরক্ষিত।</p>
+  </div>
 </footer>
 
 <script>
-/* ── Year ── */
+/* ══ Suggestion Chips ══ */
+const suggestions = {
+  'প্যানা / ব্যানার': ['সাইজ: ৩×২ ফুট', 'সাইজ: ৬×৩ ফুট', 'সাইজ: ১০×৪ ফুট', 'দুইপিঠ প্রিন্ট', 'বাঁশ/পাইপ দিয়ে'],
+  'পিভিসি':           ['সাইজ: ৩×৪ ফুট', 'সাইজ: ২×৩ ফুট', 'ওয়াল মাউন্ট', 'ড্রিল হোলসহ', 'গ্লসি ফিনিশ'],
+  'ভিনাইল স্টিকার':  ['গাড়ির জন্য', 'দেয়ালের জন্য', 'শোকেসের জন্য', 'কাটিং স্টিকার', 'ফুল কালার প্রিন্ট'],
+  'ভিজিটিং কার্ড':   ['পরিমাণ: ১০০ পিস', 'পরিমাণ: ৫০০ পিস', 'পরিমাণ: ১০০০ পিস', 'ম্যাট ল্যামিনেশন', 'গ্লসি ল্যামিনেশন', 'দুইপিঠ প্রিন্ট'],
+  'ক্যাশ মেমো':      ['পরিমাণ: ১০০ পাতা', 'পরিমাণ: ২০০ পাতা', 'পরিমাণ: ৫০০ পাতা', 'দুই কপি (কার্বন)', 'তিন কপি', 'সিরিয়াল নম্বর দিয়ে'],
+  'আইডি কার্ড':      ['পরিমাণ: ১০ পিস', 'পরিমাণ: ৫০ পিস', 'পরিমাণ: ১০০ পিস', 'রিবনসহ', 'প্লাস্টিক কভারসহ', 'ল্যান্ডস্কেপ সাইজ'],
+  'লোগো ডিজাইন':     ['ব্যবসার লোগো', 'স্কুল/প্রতিষ্ঠান', 'রেস্টুরেন্ট', 'ভেক্টর ফাইলসহ', 'একাধিক কালার ভেরিয়েন্ট', 'মনোগ্রাম স্টাইল'],
+  'সাবলিমেশন':       ['মগ প্রিন্ট', 'টি-শার্ট প্রিন্ট', 'কুশন কভার', 'কী-রিং', 'ফটো ফ্রেম', 'পরিমাণ: ১০ পিস', 'পরিমাণ: ৫০ পিস'],
+  'অন্যান্য':         ['বিস্তারিত জানাবো', 'নমুনা পাঠাবো', 'দ্রুত ডেলিভারি দরকার', 'বাল্ক অর্ডার'],
+};
+
+function updateChips() {
+  const service = document.getElementById('c-service').value;
+  const chips = suggestions[service] || [];
+  const container = document.getElementById('suggestion-chips');
+  const label = document.querySelector('.suggestion-label');
+  container.innerHTML = '';
+
+  // suggestion label শুধু chip থাকলে দেখাবে
+  label.style.display = chips.length ? 'block' : 'none';
+
+  chips.forEach(text => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'chip';
+    btn.textContent = text;
+    btn.onclick = () => {
+      const ta = document.getElementById('c-details');
+      if (btn.classList.contains('active')) {
+        // deselect: text সরিয়ে ফেলো
+        const lines = ta.value.split('\n').filter(l => l.trim() !== text.trim());
+        ta.value = lines.join('\n').trim();
+        btn.classList.remove('active');
+      } else {
+        // select: text যুক্ত করো
+        const sep = ta.value.trim() ? '\n' : '';
+        ta.value = ta.value.trim() + sep + text;
+        btn.classList.add('active');
+      }
+      ta.focus();
+    };
+    container.appendChild(btn);
+  });
+}
+
+document.getElementById('c-service').addEventListener('change', updateChips);
+updateChips();
+
+/* ══ Hamburger Menu ══ */
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobile-nav');
+hamburger.addEventListener('click', () => {
+  mobileNav.classList.toggle('open');
+});
+function closeNav() { mobileNav.classList.remove('open'); }
+
+/* ══ WhatsApp Order Form ══ */
+document.getElementById('wa-order-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const name    = document.getElementById('c-name').value.trim();
+  const phone   = document.getElementById('c-phone').value.trim();
+  const service = document.getElementById('c-service').value;
+  const details = document.getElementById('c-details').value.trim();
+
+  let msg = `*শাপলা আর্ট - নতুন অর্ডার* 🎨\n\n`;
+  msg += `👤 *নাম:* ${name}\n`;
+  msg += `📞 *মোবাইল:* ${phone}\n`;
+  msg += `🛠 *সার্ভিস:* ${service}\n`;
+  if (details) msg += `📝 *বিস্তারিত:* ${details}\n`;
+  msg += `\n📎 *(রেফারেন্স ছবি থাকলে এই চ্যাটে পাঠান)*`;
+
+  window.open(`https://wa.me/8801791835232?text=${encodeURIComponent(msg)}`, '_blank');
+});
+
+/* ══ Year ══ */
 document.getElementById('year').innerText = new Date().getFullYear();
 
-/* ── Scroll Animation ── */
+/* ══ Scroll Animation ══ */
 const obs = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -371,7 +1079,7 @@ document.querySelectorAll('.section').forEach(s => {
   obs.observe(s);
 });
 
-/* ── Price Calculator ── */
+/* ══ Price Calculator ══ */
 const rates = {
   pana:  { unit: 12,   sqft: true  },
   pvc:   { unit: 50,   sqft: true  },
@@ -379,35 +1087,46 @@ const rates = {
   card:  { unit: 0.55, sqft: false },
   memo:  { unit: 0.80, sqft: false },
   id:    { unit: 50,   sqft: false },
-  logo:  { unit: 500,  sqft: false, fixed: true }
+  logo:  { unit: 500,  sqft: false, fixed: true },
+  sub:   { unit: 150,  sqft: false }
 };
 
 function calcPrice() {
-  const s      = document.getElementById('service').value;
-  const rate   = rates[s];
-  const isSqft = rate.sqft;
-  const isFixed = rate.fixed;
-
-  document.getElementById('size-row').style.display = isSqft  ? 'grid'  : 'none';
-  document.getElementById('qty-wrap').style.display  = isSqft  ? 'none'  : 'block';
+  const s = document.getElementById('service').value;
+  const rate = rates[s];
+  document.getElementById('size-row').style.display = rate.sqft  ? 'grid'  : 'none';
+  document.getElementById('qty-wrap').style.display  = rate.sqft  ? 'none'  : 'block';
 
   let total = 0;
-  if (isSqft) {
+  if (rate.sqft) {
     const w = parseFloat(document.getElementById('bw').value) || 1;
     const h = parseFloat(document.getElementById('bh').value) || 1;
     total = w * h * rate.unit;
-  } else if (isFixed) {
+  } else if (rate.fixed) {
     total = rate.unit;
   } else {
     const qty = parseInt(document.getElementById('qty').value) || 1;
     total = qty * rate.unit;
   }
-
   document.getElementById('calc-result').textContent = '৳' + Math.round(total).toLocaleString('bn-BD');
 }
-
 calcPrice();
-</script>
 
+/* ══ Slider ══ */
+let currentIdx = 0;
+const slides = document.querySelectorAll('.slide');
+const dots   = document.querySelectorAll('.dot');
+
+function showSlide(n) {
+  slides[currentIdx].classList.remove('active');
+  dots[currentIdx].classList.remove('active');
+  currentIdx = (n + slides.length) % slides.length;
+  slides[currentIdx].classList.add('active');
+  dots[currentIdx].classList.add('active');
+}
+function changeSlide(n) { showSlide(currentIdx + n); }
+function currentSlide(n) { showSlide(n); }
+setInterval(() => changeSlide(1), 5000);
+</script>
 </body>
 </html>
