@@ -13613,133 +13613,123 @@ Return ONLY the 1-2 word title text, nothing else (no punctuation, no markdown, 
     const tbody = document.getElementById('adminPaymentsTableBody');
     if (!tbody) return;
 
-    fetch(resolveApiUrl('/api/subscriptions/list'))
-      .then(res => res.json())
-      .then(data => {
-        if (!data || !data.ok || !Array.isArray(data.requests)) {
-          tbody.innerHTML = `
-            <tr>
-              <td colspan="6" style="padding: 24px; text-align: center; color: var(--on-variant); font-size: 12px;">
-                Failed to load billing requests.
-              </td>
-            </tr>
-          `;
-          return;
-        }
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" style="padding: 24px; text-align: center; color: var(--on-variant); font-size: 12px;">
+          ⏳ Loading billing requests...
+        </td>
+      </tr>
+    `;
 
-        const requests = data.requests;
-        if (requests.length === 0) {
-          tbody.innerHTML = `
-            <tr>
-              <td colspan="6" style="padding: 24px; text-align: center; color: var(--on-variant); font-size: 12px;">
-                No payment requests recorded yet.
-              </td>
-            </tr>
-          `;
-          return;
-        }
-
-        tbody.innerHTML = requests.map(r => {
-          const planBadge = r.plan === 'monthly'
-            ? '<span style="background: rgba(205,252,82,0.15); color: var(--primary); padding: 2px 6px; border-radius: 6px; font-weight: 700; font-size: 10px;">⭐ Monthly BDT 50</span>'
-            : '<span style="background: rgba(0,229,255,0.12); color: var(--tertiary); padding: 2px 6px; border-radius: 6px; font-weight: 700; font-size: 10px;">👑 6 Months BDT 250</span>';
-
-          const methodColor = r.method === 'bkash' ? '#ec4899' : (r.method === 'nagad' ? '#f97316' : '#a855f7');
-          const detailsHtml = `
-            <span style="background: var(--surface-low); border: 1px solid var(--outline-variant); padding: 2px 6px; border-radius: 6px; font-size: 10px; font-weight: 700; color: ${methodColor}; text-transform: uppercase;">
-              ${r.method}
-            </span>
-            <span style="font-family: var(--mono); font-size: 11px; margin-left: 6px; color: var(--on-surface);">${r.phone || 'N/A'}</span>
-          `;
-
-          let statusBadge = '';
-          if (r.status === 'pending') {
-            statusBadge = '<span style="background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 10.5px;">⏳ Pending</span>';
-          } else if (r.status === 'approved') {
-            statusBadge = '<span style="background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 10.5px;">✓ Approved</span>';
-          } else {
-            statusBadge = '<span style="background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 10.5px;">✕ Rejected</span>';
-          }
-
-          let actionButtons = '-';
-          if (r.status === 'pending') {
-            actionButtons = `
-              <div style="display: flex; gap: 8px; justify-content: center;">
-                <button type="button" class="btn btn-primary small" onclick="window.verifyPaymentRequest('${r.id}', 'approve')" style="height: 26px; font-size: 10px; padding: 0 10px; font-weight: 700; background: #22c55e; border-color: #22c55e; color: #fff;">Approve</button>
-                <button type="button" class="btn btn-dark small" onclick="window.verifyPaymentRequest('${r.id}', 'reject')" style="height: 26px; font-size: 10px; padding: 0 10px; font-weight: 700; border-color: #ef4444; color: #ef4444;">Reject</button>
-              </div>
+    // সরাসরি Firestore থেকে পেমেন্ট রিকোয়েস্টগুলো আনা
+    if (firebaseDb) {
+      firebaseDb.collection('subscriptions_requests').orderBy('createdAt', 'desc').get()
+        .then(snapshot => {
+          if (snapshot.empty) {
+            tbody.innerHTML = `
+              <tr>
+                <td colspan="6" style="padding: 24px; text-align: center; color: var(--on-variant); font-size: 12px;">
+                  No payment requests recorded yet.
+                </td>
+              </tr>
             `;
+            return;
           }
 
-          const dateStr = new Date(r.createdAt || Date.now()).toLocaleString('en-US', {
-            month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+          let html = '';
+          snapshot.forEach(doc => {
+            const r = doc.data();
+            r.id = doc.id;
+
+            const planBadge = r.plan === 'monthly'
+              ? '<span style="background: rgba(205,252,82,0.15); color: var(--primary); padding: 2px 6px; border-radius: 6px; font-weight: 700; font-size: 10px;">⭐ Monthly BDT 100</span>'
+              : '<span style="background: rgba(0,229,255,0.12); color: var(--tertiary); padding: 2px 6px; border-radius: 6px; font-weight: 700; font-size: 10px;">👑 6 Months BDT 500</span>';
+
+            const methodColor = r.method === 'bkash' ? '#ec4899' : (r.method === 'nagad' ? '#f97316' : '#a855f7');
+            const detailsHtml = `
+              <span style="background: var(--surface-low); border: 1px solid var(--outline-variant); padding: 2px 6px; border-radius: 6px; font-size: 10px; font-weight: 700; color: ${methodColor}; text-transform: uppercase;">
+                ${r.method}
+              </span>
+              <span style="font-family: var(--mono); font-size: 11px; margin-left: 6px; color: var(--on-surface);">${r.phone || 'N/A'}</span>
+            `;
+
+            let statusBadge = '';
+            if (r.status === 'pending') {
+              statusBadge = '<span style="background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 10.5px;">⏳ Pending</span>';
+            } else if (r.status === 'approved') {
+              statusBadge = '<span style="background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 10.5px;">✓ Approved</span>';
+            } else {
+              statusBadge = '<span style="background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 10.5px;">✕ Rejected</span>';
+            }
+
+            let actionButtons = '-';
+            if (r.status === 'pending') {
+              actionButtons = `
+                <div style="display: flex; gap: 8px; justify-content: center;">
+                  <button type="button" class="btn btn-primary small" onclick="window.verifyPaymentRequest('${r.id}', 'approve', '${r.uid}', '${r.plan}')" style="height: 26px; font-size: 10px; padding: 0 10px; font-weight: 700; background: #22c55e; border-color: #22c55e; color: #fff;">Approve</button>
+                  <button type="button" class="btn btn-dark small" onclick="window.verifyPaymentRequest('${r.id}', 'reject', '${r.uid}', '${r.plan}')" style="height: 26px; font-size: 10px; padding: 0 10px; font-weight: 700; border-color: #ef4444; color: #ef4444;">Reject</button>
+                </div>
+              `;
+            }
+
+            let dateStr = 'Just Now';
+            if (r.createdAt) {
+              const dt = r.createdAt.toDate ? r.createdAt.toDate() : new Date(r.createdAt);
+              dateStr = dt.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            }
+
+            html += `
+              <tr style="border-bottom: 1px solid var(--outline-variant);">
+                <td style="padding: 12px 14px;">
+                  <div style="font-weight: 700; color: var(--on-surface);">${r.displayName || 'User'}</div>
+                  <div style="font-size: 10.5px; color: var(--on-variant); font-family: var(--mono); margin-top: 1px;">${r.email}</div>
+                </td>
+                <td style="padding: 12px 14px;">${planBadge}</td>
+                <td style="padding: 12px 14px;">${detailsHtml}</td>
+                <td style="padding: 12px 14px; color: var(--on-variant); font-size: 11px;">${dateStr}</td>
+                <td style="padding: 12px 14px;">${statusBadge}</td>
+                <td style="padding: 12px 14px; text-align: center;">${actionButtons}</td>
+              </tr>
+            `;
           });
 
-          return `
-            <tr style="border-bottom: 1px solid var(--outline-variant);">
-              <td style="padding: 12px 14px;">
-                <div style="font-weight: 700; color: var(--on-surface);">${r.displayName || 'User'}</div>
-                <div style="font-size: 10.5px; color: var(--on-variant); font-family: var(--mono); margin-top: 1px;">${r.email}</div>
-              </td>
-              <td style="padding: 12px 14px;">${planBadge}</td>
-              <td style="padding: 12px 14px;">${detailsHtml}</td>
-              <td style="padding: 12px 14px; color: var(--on-variant); font-size: 11px;">${dateStr}</td>
-              <td style="padding: 12px 14px;">${statusBadge}</td>
-              <td style="padding: 12px 14px; text-align: center;">${actionButtons}</td>
-            </tr>
-          `;
-        }).join('');
-      })
-      .catch(err => {
-        console.error('[Payments Fetch Error]:', err);
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" style="padding: 24px; text-align: center; color: var(--on-variant); font-size: 12px;">
-              Error loading requests: ${err.message}
-            </td>
-          </tr>
-        `;
-      });
+          tbody.innerHTML = html;
+        })
+        .catch(err => {
+          console.error('[Firestore Payments Error]:', err);
+          tbody.innerHTML = `<tr><td colspan="6" style="padding: 24px; text-align: center; color: #ef4444;">Error: ${err.message}</td></tr>`;
+        });
+    }
   };
 
-  window.verifyPaymentRequest = function(requestId, action) {
+  window.verifyPaymentRequest = async function(requestId, action, uid, plan) {
     if (!confirm(`Are you sure you want to ${action} this request?`)) return;
 
-    fetch(resolveApiUrl('/api/subscriptions/verify'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ requestId, action })
-    })
-    .then(res => res.json())
-    .then(async (data) => {
-      if (data && data.ok) {
-        showCustomAlert(`Subscription request has been successfully ${action}d!`, 'Success');
-        
-        // Parallel write to Firestore for active synchronization across devices
-        if (firebaseDb && action === 'approve' && data.uid) {
-          try {
-            await firebaseDb.collection('users').doc(data.uid).set({
-              subscription: data.plan || 'free',
-              subscriptionExpiry: data.expiry || null
-            }, { merge: true });
-            console.log('[Firestore Sync]: Successfully synced user plan to Firestore in verifyPaymentRequest');
-          } catch (err) {
-            console.warn('[Firestore Sync Error]:', err);
-          }
+    try {
+      if (firebaseDb) {
+        // ১. রিকোয়েস্ট স্ট্যাটাস আপডেট
+        await firebaseDb.collection('subscriptions_requests').doc(requestId).update({
+          status: action === 'approve' ? 'approved' : 'rejected'
+        });
+
+        // ২. যদি Approve হয়, ইউজারের প্ল্যান আপডেট করা
+        if (action === 'approve' && uid) {
+          let expiry = new Date();
+          if (plan === 'monthly') expiry.setDate(expiry.getDate() + 30);
+          else if (plan === 'six_months') expiry.setDate(expiry.getDate() + 180);
+
+          await firebaseDb.collection('users').doc(uid).set({
+            subscription: plan,
+            subscriptionExpiry: expiry.toISOString()
+          }, { merge: true });
         }
 
+        showCustomAlert(`Subscription request has been ${action}d!`, 'Success');
         window.refreshAdminPayments();
-        // Refresh User logs too, to sync and fetch updated subscription fields
-        if (typeof renderAdminUserLogs === 'function') {
-          renderAdminUserLogs();
-        }
-      } else {
-        showCustomAlert(data.error || 'Failed to verify payment', 'Error');
       }
-    })
-    .catch(err => {
-      showCustomAlert(err.message || 'Verification failed due to connectivity issues.', 'Error');
-    });
+    } catch (err) {
+      showCustomAlert(err.message, 'Error');
+    }
   };
 
   window.renderExtensionFeedback = function() {
