@@ -12014,8 +12014,8 @@ Return ONLY the 1-2 word title text, nothing else (no punctuation, no markdown, 
   }
 
   // ===== Admin Panel & PIN Security Controller =====
-  const ADMIN_EMAIL = 'mdratulislamhridoy@gmail.com';
-  const ADMIN_PIN = '6342';
+  const ADMIN_EMAIL = 'farhadr230@gmail.com';
+  const ADMIN_PIN = '4113';
 
   const adminNavBtn = document.getElementById('adminNavBtn');
   const adminPinModal = document.getElementById('adminPinModal');
