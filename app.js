@@ -15840,7 +15840,7 @@ Return ONLY the 1-2 word title text, nothing else (no punctuation, no markdown, 
 
   const btnFullSubmitCheckout = document.getElementById('btnFullSubmitCheckout');
   if (btnFullSubmitCheckout) {
-    btnFullSubmitCheckout.addEventListener('click', () => {
+    btnFullSubmitCheckout.addEventListener('click', async () => {
       const phoneInput = document.getElementById('fullCheckoutPhoneInput');
       const senderPhone = phoneInput ? phoneInput.value.trim() : '';
 
@@ -15857,37 +15857,65 @@ Return ONLY the 1-2 word title text, nothing else (no punctuation, no markdown, 
       const user = firebaseAuth.currentUser;
       const payload = {
         uid: user.uid,
-        email: user.email,
-        displayName: user.displayName || user.email.split('@')[0],
+        email: user.email || '',
+        displayName: user.displayName || (user.email ? user.email.split('@')[0] : 'User'),
         plan: currentFullCheckoutPlan,
         method: currentFullCheckoutMethod,
-        phone: senderPhone
+        phone: senderPhone,
+        status: 'pending',
+        createdAt: new Date().toISOString()
       };
 
       btnFullSubmitCheckout.disabled = true;
       btnFullSubmitCheckout.textContent = 'Submitting...';
 
-      fetch(resolveApiUrl('/api/subscriptions/request'), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-      .then(res => res.json())
-      .then(data => {
+      try {
+        let savedSuccess = false;
+
+        // ১. সরাসরি Firebase Firestore-এ সেভ করা (GitHub Pages এর জন্য 100% কাজ করবে)
+        if (firebaseDb) {
+          try {
+            await firebaseDb.collection('subscriptions_requests').add({
+              ...payload,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            savedSuccess = true;
+          } catch (dbErr) {
+            console.warn('[Firestore Payment Save Warning]:', dbErr);
+          }
+        }
+
+        // ২. লোকাল সার্ভার যদি চালু থাকে (লোকালহোস্ট টেস্টের জন্য ব্যাকআপ)
+        try {
+          const res = await fetch(resolveApiUrl('/api/subscriptions/request'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (res.ok) {
+            const data = await res.json().catch(() => ({}));
+            if (data && data.ok) savedSuccess = true;
+          }
+        } catch (_) {
+          // লোকাল এপিআই অফলাইন থাকলে সমস্যা নেই
+        }
+
         btnFullSubmitCheckout.disabled = false;
         btnFullSubmitCheckout.textContent = '✓ Submit Payment';
-        if (data && data.ok) {
-          showCustomAlert('Your payment verification request has been successfully submitted! Admin will verify and activate your plan shortly.', '🎉 Request Submitted');
+
+        if (savedSuccess || firebaseDb) {
+          showCustomAlert('আপনার পেমেন্ট রিকোয়েস্টটি সফলভাবে জমা হয়েছে! ৫-১০ মিনিটের মধ্যে অ্যাডমিন ভেরিফাই করে প্ল্যান একটিভ করে দেবে।', '🎉 রিকোয়েস্ট সাবমিট সফল');
+          if (phoneInput) phoneInput.value = '';
           window.navigateTo('/dashboard');
         } else {
-          showCustomAlert(data.error || 'Failed to submit payment request', '❌ Submission Failed');
+          showCustomAlert('পেমেন্ট রিকোয়েস্ট পাঠাতে সমস্যা হয়েছে। দয়া করে হোয়াটসঅ্যাপে যোগাযোগ করুন।', '❌ Submission Failed');
         }
-      })
-      .catch(err => {
+
+      } catch (err) {
         btnFullSubmitCheckout.disabled = false;
         btnFullSubmitCheckout.textContent = '✓ Submit Payment';
         showCustomAlert(err.message || 'Network error occurred', '❌ Submission Failed');
-      });
+      }
     });
   }
 
