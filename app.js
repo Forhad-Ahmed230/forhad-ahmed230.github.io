@@ -15780,7 +15780,7 @@ Return ONLY the 1-2 word title text, nothing else (no punctuation, no markdown, 
         instructionsEl.innerHTML = `
           ১. প্রথমে নগদ অ্যাপটি ওপেন করুন।<br>
           ২. সেখান থেকে <b>'সেন্ড মানি' (Send Money)</b> অপশনে প্রেস করুন।<br>
-          ৩. আপনার ১১ ডিজিটের নগদ নাম্বারটি <b class="checkout-highlight-text" style="font-size:13.5px; font-family:var(--mono);">01855116827</b> লিখুন।<br>
+          ৩. আপনার ১১ ডিজিটের নগদ নাম্বারটি <b class="checkout-highlight-text" style="font-size:13.5px; font-family:var(--mono);">01791835232</b> লিখুন।<br>
           ৪. আপনার পেমেন্ট এর পরিমাণ <b>${priceText}</b> লিখুন।<br>
           ৫. আপনার পিন <b>(PIN)</b> নাম্বারটি দিয়ে পেমেন্টটি কনফার্ম করুন।
         `;
