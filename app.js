@@ -14074,7 +14074,7 @@ Return ONLY the 1-2 word title text, nothing else (no punctuation, no markdown, 
       appBody.classList.add('in-admin-view');
     }
 
-    if (pageTitle) pageTitle.textContent = '👑 GravityLab Admin Workspace';
+    if (pageTitle) pageTitle.textContent = 'Vectorizer Admin Workspace';
     if (pageTitleBadge) {
       pageTitleBadge.textContent = 'v6.0 Admin';
       pageTitleBadge.style.background = 'rgba(255, 255, 255, 0.08)';
@@ -14149,11 +14149,11 @@ Return ONLY the 1-2 word title text, nothing else (no punctuation, no markdown, 
         closeAdminPinModal();
         window.enterAdminWorkspace();
         performAutoCleanup();
-        if (window.showCustomToast) window.showCustomToast('Welcome Admin! PIN 6342 Verified 👑', 'success');
+        if (window.showCustomToast) window.showCustomToast('Welcome Admin! PIN 4113 Verified 👑', 'success');
       } else {
         if (adminPinInput) adminPinInput.value = '';
         if (window.showCustomAlert) {
-          window.showCustomAlert('Incorrect Security PIN. Please enter 6342.', 'Admin Security', 'error');
+          window.showCustomAlert('Incorrect Security PIN. Please enter 4113.', 'Admin Security', 'error');
         }
       }
     });
@@ -14189,12 +14189,12 @@ Return ONLY the 1-2 word title text, nothing else (no punctuation, no markdown, 
 
   if (btnAdminExportLogs) {
     btnAdminExportLogs.addEventListener('click', () => {
-      const diagData = `GravityLab Diagnostics Report\nTime: ${new Date().toISOString()}\nAdmin: ${ADMIN_EMAIL}\nFirebase App: gravitylab-d9276\nUserAgent: ${navigator.userAgent}`;
+      const diagData = `Vectorizer Diagnostics Report\nTime: ${new Date().toISOString()}\nAdmin: ${ADMIN_EMAIL}\nFirebase App: vector-30ffb\nUserAgent: ${navigator.userAgent}`;
       const blob = new Blob([diagData], { type: 'text/plain' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'gravitylab-diagnostics.txt';
+      a.download = 'vectorizer-diagnostics.txt';
       a.click();
       URL.revokeObjectURL(url);
       if (window.showCustomToast) window.showCustomToast('Diagnostics report exported!', 'success');
