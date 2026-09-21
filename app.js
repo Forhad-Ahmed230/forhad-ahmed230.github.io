@@ -15744,7 +15744,7 @@ Return ONLY the 1-2 word title text, nothing else (no punctuation, no markdown, 
     if (whatsappBtn) {
       if (method === 'others') {
         whatsappBtn.style.display = 'inline-flex';
-        whatsappBtn.href = `https://wa.me/8801855116827?text=Hello,%20I%20want%20to%20pay%20via%20others%20for%20GravityLab.%20Plan:%20${currentFullCheckoutPlan}`;
+        whatsappBtn.href = `https://wa.me/8801791835232?text=Hello,%20I%20want%20to%20pay%20via%20others%20for%20Vectorizer.%20Plan:%20${currentFullCheckoutPlan}`;
       } else {
         whatsappBtn.style.display = 'none';
       }
@@ -15755,7 +15755,7 @@ Return ONLY the 1-2 word title text, nothing else (no punctuation, no markdown, 
         badgeEl.textContent = 'bKash Merchant';
         badgeEl.className = 'payment-badge bkash';
       }
-      if (numberEl) numberEl.textContent = '01330342337';
+      if (numberEl) numberEl.textContent = '01791835232';
       if (qrContainer) qrContainer.style.display = 'flex';
       
       if (instructionsEl) {
@@ -15773,7 +15773,7 @@ Return ONLY the 1-2 word title text, nothing else (no punctuation, no markdown, 
         badgeEl.textContent = 'Nagad Personal';
         badgeEl.className = 'payment-badge nagad';
       }
-      if (numberEl) numberEl.textContent = '01855116827';
+      if (numberEl) numberEl.textContent = '01791835232';
       if (qrContainer) qrContainer.style.display = 'none';
 
       if (instructionsEl) {
@@ -15790,7 +15790,7 @@ Return ONLY the 1-2 word title text, nothing else (no punctuation, no markdown, 
         badgeEl.textContent = 'Others / Contact Us';
         badgeEl.className = 'payment-badge others';
       }
-      if (numberEl) numberEl.textContent = '01855116827';
+      if (numberEl) numberEl.textContent = '01791835232';
       if (qrContainer) qrContainer.style.display = 'none';
 
       // Hide verification elements since others flow is WhatsApp-only
