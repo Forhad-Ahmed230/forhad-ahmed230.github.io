@@ -15761,7 +15761,7 @@ Return ONLY the 1-2 word title text, nothing else (no punctuation, no markdown, 
       if (instructionsEl) {
         instructionsEl.innerHTML = `
           ১. প্রথমে বিকাশ অ্যাপ থেকে <b>'পেমেন্ট' (Payment)</b> অপশনে যান।<br>
-          ২. মার্চেন্ট নাম্বার বক্সে আমাদের বিকাশ নাম্বারটি <b class="checkout-highlight-text" style="font-size:13.5px; font-family:var(--mono);">01330342337</b> লিখুন অথবা বিকাশ অ্যাপ থেকে কিউআর কোডটি স্ক্যান করুন।<br>
+          ২. মার্চেন্ট নাম্বার বক্সে আমাদের বিকাশ নাম্বারটি <b class="checkout-highlight-text" style="font-size:13.5px; font-family:var(--mono);"> 01791835232 </b> লিখুন অথবা বিকাশ অ্যাপ থেকে কিউআর কোডটি স্ক্যান করুন।<br>
           ৩. তারপর আপনার টাকার পরিমাণ <b>${priceText}</b> লিখুন।<br>
           ৪. এরপর এগিয়ে যান বাটনে প্রেস করুন।<br>
           ৫. আপনার পিন <b>(PIN)</b> নাম্বারটি দিয়ে পরবর্তীতে প্রেস করুন।<br>
