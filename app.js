@@ -15752,20 +15752,20 @@ Return ONLY the 1-2 word title text, nothing else (no punctuation, no markdown, 
 
     if (method === 'bkash') {
       if (badgeEl) {
-        badgeEl.textContent = 'bKash Merchant';
+        badgeEl.textContent = 'bKash Personal';
         badgeEl.className = 'payment-badge bkash';
       }
       if (numberEl) numberEl.textContent = '01791835232';
-      if (qrContainer) qrContainer.style.display = 'flex';
+      if (qrContainer) qrContainer.style.display = 'none'; // পার্সোনাল নাম্বারে কিউআর কোড স্ক্যান কাজ নাও করতে পারে, তাই বন্ধ রাখা হলো
       
       if (instructionsEl) {
         instructionsEl.innerHTML = `
-          ১. প্রথমে বিকাশ অ্যাপ থেকে <b>'পেমেন্ট' (Payment)</b> অপশনে যান।<br>
-          ২. মার্চেন্ট নাম্বার বক্সে আমাদের বিকাশ নাম্বারটি <b class="checkout-highlight-text" style="font-size:13.5px; font-family:var(--mono);"> 01791835232 </b> লিখুন অথবা বিকাশ অ্যাপ থেকে কিউআর কোডটি স্ক্যান করুন।<br>
+          ১. প্রথমে বিকাশ অ্যাপ থেকে <b>'সেন্ড মানি' (Send Money)</b> অপশনে যান।<br>
+          ২. প্রাপক নাম্বার বক্সে আমাদের বিকাশ নাম্বারটি <b class="checkout-highlight-text" style="font-size:13.5px; font-family:var(--mono);">01791835232</b> লিখুন।<br>
           ৩. তারপর আপনার টাকার পরিমাণ <b>${priceText}</b> লিখুন।<br>
-          ৪. এরপর এগিয়ে যান বাটনে প্রেস করুন।<br>
-          ৫. আপনার পিন <b>(PIN)</b> নাম্বারটি দিয়ে পরবর্তীতে প্রেস করুন।<br>
-          ৬. সবশেষে <b>'পেমেন্ট করতে ট্যাপ করে ধরে রাখুন'</b> বাটনে প্রেস করে পেমেন্ট সম্পন্ন করুন।
+          ৪. এরপর তীর আইকনে ট্যাপ করে এগিয়ে যান।<br>
+          ৫. আপনার বিকাশ পিন <b>(PIN)</b> নাম্বারটি দিয়ে পরবর্তীতে প্রেস করুন।<br>
+          ৬. সবশেষে <b>'সেন্ড মানি করতে ট্যাপ করে ধরে রাখুন'</b> বাটনে চেপে ধরে পেমেন্ট সম্পন্ন করুন।
         `;
       }
     } else if (method === 'nagad') {
@@ -15780,8 +15780,8 @@ Return ONLY the 1-2 word title text, nothing else (no punctuation, no markdown, 
         instructionsEl.innerHTML = `
           ১. প্রথমে নগদ অ্যাপটি ওপেন করুন।<br>
           ২. সেখান থেকে <b>'সেন্ড মানি' (Send Money)</b> অপশনে প্রেস করুন।<br>
-          ৩. আপনার ১১ ডিজিটের নগদ নাম্বারটি <b class="checkout-highlight-text" style="font-size:13.5px; font-family:var(--mono);">01791835232</b> লিখুন।<br>
-          ৪. আপনার পেমেন্ট এর পরিমাণ <b>${priceText}</b> লিখুন।<br>
+          ৩. প্রাপক নাম্বার বক্সে আমাদের নগদ নাম্বারটি <b class="checkout-highlight-text" style="font-size:13.5px; font-family:var(--mono);">01791835232</b> লিখুন।<br>
+          ৪. আপনার পেমেন্টের পরিমাণ <b>${priceText}</b> লিখুন।<br>
           ৫. আপনার পিন <b>(PIN)</b> নাম্বারটি দিয়ে পেমেন্টটি কনফার্ম করুন।
         `;
       }
